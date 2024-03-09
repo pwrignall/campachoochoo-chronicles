@@ -3,10 +3,10 @@
 
 :root {
   /* Set sans-serif & mono fonts */
-  --serif-font: "Spectral", "Roboto Serif", "Iowan Old Style", "Apple Garamond",
+  --serif-font: "EB Garamond", "Garamond", "Roboto Serif", "Iowan Old Style", "Apple Garamond",
     "Baskerville", "Times New Roman", "Droid Serif", "Times", "Source Serif Pro",
     serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  --sans-font: "Dosis", Roboto, "Nimbus Sans L", "Avenir Next", Avenir,
+  --sans-font: "Jost", Roboto, "Nimbus Sans L", "Avenir Next", Avenir,
     "Segoe UI", Arial, Helvetica, "Helvetica Neue", sans-serif;
   --mono-font: "Ubuntu Mono", Consolas, Menlo, Monaco, "Andale Mono", monospace;
   --bg: #fafafa;
@@ -78,8 +78,8 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: "Dosis";
-  font-weight: 600;
+  font-family: var(--sans-font);
+  font-weight: 400;
   margin-bottom: 0.25em;
 }
 
