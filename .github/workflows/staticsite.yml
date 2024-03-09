@@ -21,42 +21,31 @@ permissions:
   id-token: write
   deployments: write
 
-jobs:
-  build:
-    runs-on: ubuntu-latest
 
+jobs:
+  # Single deploy job since we're just deploying
+  deploy:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
-
+    runs-on: ubuntu-latest
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v3
-
-      - name: Set up Docker Layer caching
-        uses: jpribyl/action-docker-layer-caching@v0.1.1
-        # Ignore the failure of a step and avoid terminating the job.
-        continue-on-error: true
-
-      - name: Use Node.js 18
-        uses: actions/setup-node@v3
+      - name: Checkout
+        uses: actions/checkout@v3
         with:
-          node-version: 18
-
-      - name: Build the static site
-        # If GH_GIST_TOKEN doesn't exist, empty value gets passed.
-        # Unauthenticated call gets made to Gist API which can result in rate limits,
-        # Especially in Github Actions
-        run: /bin/bash -c 'npm install;npm run build --gisttoken=${{ secrets.GH_GIST_TOKEN }} --githubtoken=${{ secrets.GITHUB_TOKEN }}'
-
-      - name: Setup Github Pages
+          fetch-depth: 0
+      -  uses: actions/setup-node@v3
+      - name: Install git
+        run: sudo apt-get install -y git
+      - run: npm install
+      - run: npx eleventy
+      - name: Setup Pages
         uses: actions/configure-pages@v2
-
-      - name: Upload Github Pages artifact
+      - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
+          # Upload entire repository
           path: 'docs'
-
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v1
