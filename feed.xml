@@ -1,0 +1,392 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+	<title>Campachoochoo Chronicles</title>
+	<subtitle>pwrignall&#39;s internet space on coding, creations, side projects.</subtitle>
+	
+	<link href="https://chronicles.campachoochoo.net/feed.xml" rel="self"/>
+	<link href="https://chronicles.campachoochoo.net/"/>
+	<updated>2024-02-07T00:00:00Z</updated>
+	<id>https://chronicles.campachoochoo.net/</id>
+	<author>
+		<name>pwrignall</name>
+		<email></email>
+	</author>
+	
+	<entry>
+		<title>How to create an airline route map with QGIS</title>
+		<link href="https://chronicles.campachoochoo.net/route-maps-with-qgis/"/>
+		<updated>2024-02-07T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/route-maps-with-qgis/</id>
+		<content type="html">&lt;p&gt;This guide will take you through the steps to plot a route map in QGIS, with lines between points as great circles.&lt;/p&gt;
+&lt;p&gt;When I worked at an aviation news and data company called &lt;a href=&quot;https://www.flightglobal.com/&quot;&gt;FlightGlobal&lt;/a&gt;, we occasionally
+wanted to display a map showing newly-announced routes, the geographical reach of a carrier, or the top n routes in a
+region.&lt;/p&gt;
+&lt;p&gt;For static maps, intended to be printed, I used the excellent geographic information system application,
+&lt;a href=&quot;https://qgis.org/&quot;&gt;QGIS&lt;/a&gt;. Whilst my process most certainly could be streamlined, I’m laying it out here so if you ever
+feel like mapping some routes, you can too!&lt;/p&gt;
+&lt;h2 id=&quot;data-prep&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/#data-prep&quot;&gt;Data prep&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Route maps tend to use &lt;a href=&quot;https://en.wikipedia.org/wiki/Great-circle_distance&quot;&gt;great circles&lt;/a&gt; to connect points on a map.
+Because of things like weather these are not the exact coordinates an aircraft would follow, but they’re used because
+they’re the shortest distance between two points. And they look nice.&lt;/p&gt;
+&lt;p&gt;I had an R script I used to use for this. But I’ve lost it. My attempt to re-write it in Python took a while but,
+thanks to the &lt;a href=&quot;https://geographiclib.sourceforge.io/Python/doc/examples.html&quot;&gt;geographiclib&lt;/a&gt; package and its
+examples, I got something working that does a decent job.&lt;/p&gt;
+&lt;p&gt;The &lt;a href=&quot;https://github.com/pwrignall/gclines&quot;&gt;script is on GitHub&lt;/a&gt; with instructions and takes a couple of inputs to
+produce two outputs: a file containing unique airports, &lt;em&gt;airport_points.csv&lt;/em&gt;, and a file containing all
+the points needed to create the great circle lines in QGIS, &lt;em&gt;route_points.csv&lt;/em&gt;.&lt;/p&gt;
+&lt;h2 id=&quot;adding-data-layers-to-qgis&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/#adding-data-layers-to-qgis&quot;&gt;Adding data layers to QGIS&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Once you’ve &lt;a href=&quot;https://qgis.org/en/site/forusers/download.html&quot;&gt;installed QGIS&lt;/a&gt;, you’ll need to add your data as layers
+in the application. Once all of your data layers are in, you can experiment with different styles and map projections.&lt;/p&gt;
+&lt;h3 id=&quot;map-base-layer&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/#map-base-layer&quot;&gt;Map base layer&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;For this I recommend the brilliant &lt;a href=&quot;https://www.naturalearthdata.com/&quot;&gt;Natural Earth&lt;/a&gt; project. Medium scale should be
+fine for this use case, so you can navigate to the &lt;em&gt;1:50m Physical&lt;/em&gt; downloads and save the &lt;em&gt;Land&lt;/em&gt; layer — which
+includes polygons for land and major islands of the world — to a working directory on your device.&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;In QGIS, in an empty project, add that layer through the menu options: &lt;strong&gt;Layer → Add Layer → Add Vector
+Layer…&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;By &lt;em&gt;Vector Dataset(s)&lt;/em&gt;, browse to your downloaded Natural Earth .zip file and then click &lt;strong&gt;Add&lt;/strong&gt;. Close this dialog
+box.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/01-basemap.png&quot;&gt;&lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/01-basemap.png&quot; alt=&quot;After adding your land layer you should have something
+like this.&quot; loading=&quot;lazy&quot; style=&quot;&quot; /&gt;&lt;/a&gt;&lt;figcaption&gt;After adding your land layer you should have something
+like this.&lt;/figcaption&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;route-points&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/#route-points&quot;&gt;Route points&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Now we’ll use the outputs from the earlier script and add them as another layer to the project. For this example, I’ve
+plotted the hypothetical route travelled by the Champions League trophy since 1993, from the venue of that year’s final
+in Munich (MUC) through all the winners’ nearest airports and the other final venues.&lt;/p&gt;
+&lt;ol start=&quot;3&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;Click &lt;strong&gt;Layer → Add Layer → Add Delimited Text Layer…&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;By &lt;em&gt;File Name&lt;/em&gt;, browse to your working directory and select the &lt;strong&gt;route_points.csv&lt;/strong&gt; file.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Under &lt;em&gt;File Format&lt;/em&gt;, verify &lt;strong&gt;CSV&lt;/strong&gt; is selected.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Under &lt;em&gt;Geometry Definition&lt;/em&gt;, select &lt;strong&gt;EPSG:4326 - WGS 84&lt;/strong&gt; as the &lt;em&gt;Geometry CRS&lt;/em&gt; and click &lt;strong&gt;Add&lt;/strong&gt;. You can then
+close this dialog.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;With the route_points layer selected, find the &lt;strong&gt;Zoom to Layer&lt;/strong&gt; button on the toolbar or within the &lt;em&gt;View&lt;/em&gt; menu to
+zoom in and focus on your routes, if you like.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/02-route-points.png&quot;&gt;&lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/02-route-points.png&quot; alt=&quot;Blobs on shapes, zoomed in. We&#39;ll style this later.&quot; loading=&quot;lazy&quot; style=&quot;&quot; /&gt;&lt;/a&gt;&lt;figcaption&gt;Blobs on shapes, zoomed in. We’ll style this later.&lt;/figcaption&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;points-to-lines&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/#points-to-lines&quot;&gt;Points to lines&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Whilst there are QGIS plugins to convert point pairs to lines, I don’t think they had all the features I was looking
+for. I may revisit this and see if &lt;a href=&quot;https://plugins.qgis.org/plugins/Beeline/&quot;&gt;Beeline&lt;/a&gt; (which led me to the Python
+functions I used in my own script) can offer a simpler alternative to what I’m doing.
+Instead, I’ve used a plugin called &lt;a href=&quot;https://plugins.qgis.org/plugins/points2one/&quot;&gt;Points2One&lt;/a&gt; to transform the long list
+of longitude/latitude coordinate sequences to a set of lines.&lt;/p&gt;
+&lt;p&gt;Install the plugin through the menu, &lt;strong&gt;Plugins → Manage and Install Plugins…&lt;/strong&gt; and search for
+“Points2One”.&lt;/p&gt;
+&lt;ol start=&quot;8&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;Select the Points2One dialog through &lt;strong&gt;Vector → Points2One → Points2One&lt;/strong&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;em&gt;Input vector layer&lt;/em&gt; should be &lt;strong&gt;route_points&lt;/strong&gt;. You’ll want to &lt;strong&gt;Create lines&lt;/strong&gt; and &lt;em&gt;Group features by&lt;/em&gt; &lt;strong&gt;route&lt;/strong&gt;.
+Enter an &lt;em&gt;Output shapefile&lt;/em&gt; filename in which your lines will be saved and check the &lt;em&gt;Add result to canvas&lt;/em&gt; box:&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/03-points2one.png&quot;&gt;&lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/03-points2one.png&quot; alt=&quot;Points2One options.&quot; loading=&quot;lazy&quot; style=&quot;&quot; /&gt;&lt;/a&gt;&lt;figcaption&gt;Points2One options.&lt;/figcaption&gt;&lt;/figure&gt;
+&lt;ol start=&quot;10&quot;&gt;
+&lt;li&gt;Click &lt;strong&gt;OK&lt;/strong&gt; and &lt;strong&gt;Close&lt;/strong&gt; on the Points2One dialog.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/04-blobs-and-lines.png&quot;&gt;&lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/04-blobs-and-lines.png&quot; alt=&quot;Lines connecting the blobs.&quot; loading=&quot;lazy&quot; style=&quot;&quot; /&gt;&lt;/a&gt;&lt;figcaption&gt;Lines connecting the blobs.&lt;/figcaption&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;airport-points&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/#airport-points&quot;&gt;Airport points&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Our final layer will be marks for the individual airports. This was the other output file generated by the earlier
+script.&lt;/p&gt;
+&lt;ol start=&quot;11&quot;&gt;
+&lt;li&gt;
+&lt;p&gt;Click &lt;strong&gt;Layer → Add Layer → Add Delimited Text Layer…&lt;/strong&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;By &lt;em&gt;File Name&lt;/em&gt;, browse to your working directory and select the &lt;strong&gt;airport_points.csv&lt;/strong&gt; file.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Ensure &lt;em&gt;File Format&lt;/em&gt; is &lt;strong&gt;CSV&lt;/strong&gt; and &lt;em&gt;Geometry CRS&lt;/em&gt; is &lt;strong&gt;EPSG:4326 - WGS 84&lt;/strong&gt;. Click &lt;strong&gt;Add&lt;/strong&gt; and close the dialog.
+Because our route points include the airports as start and end points, this addition won’t be obvious until we adjust
+the styling.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2 id=&quot;changing-the-map-s-appearance&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/#changing-the-map-s-appearance&quot;&gt;Changing the map’s appearance&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&quot;layer-symbology&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/#layer-symbology&quot;&gt;Layer symbology&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Editing symbology, or how layers are styled — sometimes based on some data attribute like you would do on a
+choropleth — can be done by double-clicking a layer in QGIS. You can choose an in-built style or make up your own.
+You can modify object fills and strokes and that’s all I’ll be doing for this map, using &lt;strong&gt;Simple Fill&lt;/strong&gt;, &lt;strong&gt;Simple
+Line&lt;/strong&gt; and &lt;strong&gt;Simple Marker&lt;/strong&gt; depending on the layer type.&lt;/p&gt;
+&lt;p&gt;You can also adjust the canvas colour through &lt;strong&gt;Project → Properties → General → Background color&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Toggle a layer’s visibility completely by clicking the eye-shaped icon next to a layer. We want to do this now for the
+route_points layer.&lt;/p&gt;
+&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/05-after-some-styling.png&quot;&gt;&lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/05-after-some-styling.png&quot; alt=&quot;Choosing colours is hard.&quot; loading=&quot;lazy&quot; style=&quot;&quot; /&gt;&lt;/a&gt;&lt;figcaption&gt;Choosing colours is hard.&lt;/figcaption&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;airport-labels&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/#airport-labels&quot;&gt;Airport labels&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;We can add text labels to give the viewer an idea of which airport is where.&lt;/p&gt;
+&lt;p&gt;Double-click the airport_points layer then select &lt;strong&gt;Labels&lt;/strong&gt;. Choose &lt;strong&gt;Single Labels&lt;/strong&gt; from the dropdown. For &lt;em&gt;Value&lt;/em&gt;
+I’m using the Expression Builder next to the field dropdown and have entered &lt;code&gt;&amp;quot;iata_code&amp;quot;  || &#39; &#39; || &amp;quot;loc_name&amp;quot;&lt;/code&gt; which
+will concatenate the airport code and municipality (maybe not the most intuitive name in all cases, as you’ll see) from
+the airports input file.&lt;/p&gt;
+&lt;p&gt;Within this dialog you can adjust the label font, placement and any text effects like buffers and shadows.&lt;/p&gt;
+&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/06-label-maker.png&quot;&gt;&lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/06-label-maker.png&quot; alt=&quot;Adding a buffer to improve legibility.&quot; loading=&quot;lazy&quot; style=&quot;&quot; /&gt;&lt;/a&gt;&lt;figcaption&gt;Adding a buffer to improve legibility.&lt;/figcaption&gt;&lt;/figure&gt;
+&lt;h3 id=&quot;map-projection&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/#map-projection&quot;&gt;Map projection&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;When the geographic extent of a map is limited to a specific region, it’s a good opportunity to use a different map
+projection to minimise the distortions we make when flattening a sphere onto a rectangle.&lt;/p&gt;
+&lt;p&gt;My go-to tool for choosing a good projection is &lt;a href=&quot;https://projectionwizard.org/&quot;&gt;Projection Wizard&lt;/a&gt;. With it, we can
+specify the boundaries of the map and receive some suggested projections in return. For this region, I’ll optimise by
+equal area and use an Albers equal-area conic projection. The tool also gives the coordinate string you need
+for QGIS in either proj4 or WKT formats. QGIS accepts both but prefers WKT.&lt;/p&gt;
+&lt;p&gt;Within QGIS, define a new projection from &lt;strong&gt;Settings → Custom Projections…&lt;/strong&gt; Click the plus icon to add a
+new projection, give it a name and paste the text from Projection Wizard into the &lt;em&gt;Parameters&lt;/em&gt; box. Click &lt;strong&gt;OK&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;Now re-project your map to the newly-defined projection by selecting &lt;strong&gt;Project → Properties…&lt;/strong&gt;. In the
+dialog click &lt;strong&gt;CRS&lt;/strong&gt; (Coordinate Reference System). Within &lt;em&gt;Predefined Coordinate Reference Systems&lt;/em&gt; scroll down until
+you see some under &lt;strong&gt;User-defined&lt;/strong&gt; and select the name you just created. Click &lt;strong&gt;OK&lt;/strong&gt; and there’s your re-projected
+map!&lt;/p&gt;
+&lt;p&gt;From here you can export the map as an image or PDF to further tweak it. Here’s my end product, after exporting and
+adding a title. I also took the opportunity to edit airport_points.csv and tidy up the location name labels.&lt;/p&gt;
+&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/07-reprojected.png&quot;&gt;&lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/07-reprojected.png&quot; alt=&quot;Lots of visits to Milan, Munich and Madrid.&quot; loading=&quot;lazy&quot; style=&quot;&quot; /&gt;&lt;/a&gt;&lt;figcaption&gt;Lots of visits to Milan, Munich and Madrid.&lt;/figcaption&gt;&lt;/figure&gt;
+&lt;h2 id=&quot;summary&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/#summary&quot;&gt;Summary&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;And that’s it, although quite an involved process end-to-end this doesn’t take too long once you’re used to it. Except
+maybe choosing the colours. With this method you can create quite detailed explanatory maps as well as more abstract
+ones like this. Enjoy!&lt;/p&gt;
+&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/08-world-lines.png&quot;&gt;&lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/qgis-routes/08-world-lines.png&quot; alt=&quot;Route information from openflights.org&quot; loading=&quot;lazy&quot; style=&quot;&quot; /&gt;&lt;/a&gt;&lt;figcaption&gt;Route information from openflights.org&lt;/figcaption&gt;&lt;/figure&gt;</content>
+	</entry>
+	
+	<entry>
+		<title>Coffeeneur completion</title>
+		<link href="https://chronicles.campachoochoo.net/coffeeneur-completion/"/>
+		<updated>2023-11-20T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/coffeeneur-completion/</id>
+		<content type="html">&lt;p&gt;Rounding off the &lt;a href=&quot;https://chasingmailboxes.com/2023/09/24/coffeeneuring-challenge-2023-lucky-13/&quot;&gt;2023 Coffeeneuring Challenge&lt;/a&gt; with a fizzle.&lt;/p&gt;
+&lt;p&gt;I only just managed to squeeze in today’s ride to complete the requisite seven rides, leaving it to the last minute as I often do.&lt;/p&gt;
+&lt;h2 id=&quot;today-s-ride&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/coffeeneur-completion/#today-s-ride&quot;&gt;Today’s ride&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;It almost went wrong, I headed out for a late lunch and meandered to make up the minimum two-mile distance rule before arriving at my planned coffee stop to realise it was closed on Mondays.&lt;/p&gt;
+&lt;p&gt;So, I continued in the direction of &lt;strong&gt;Chalk Hills Bakery&lt;/strong&gt;, a kiosk attached to the bakery itself which meant enjoying a ‘Coffee Shop Without Walls’. At least I remembered to bring a KeepCup and avoid a paper cup.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-11-20_01-chalk-hills.jpg&quot;&gt;
+    &lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-11-20_01-chalk-hills.jpg&quot; alt=&quot;&quot; loading=&quot;lazy&quot; /&gt;&lt;/a&gt;
+    &lt;figcaption&gt;Coffee al fresco&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;So, that’s it, an end to a thoroughly enjoyable challenge which I expected to complete with a little more time to spare but saw me:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Cycle 67.6 kilometres over seven rides&lt;/li&gt;
+&lt;li&gt;Consume five cappuccinos (campachoochoos), one cortado and one flat white&lt;/li&gt;
+&lt;li&gt;Get my bike pretty filthy&lt;/li&gt;
+&lt;li&gt;Have fun and feel good!&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Until next year!&lt;/p&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>Coffee at Planet Sweet</title>
+		<link href="https://chronicles.campachoochoo.net/planet-sweet/"/>
+		<updated>2023-11-17T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/planet-sweet/</id>
+		<content type="html">&lt;p&gt;In which I enjoy a bacon and brie panini at a place with an excellent name.&lt;/p&gt;
+&lt;h2 id=&quot;today-s-ride&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/planet-sweet/#today-s-ride&quot;&gt;Today’s ride&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Today’s Coffeeneur was #6 of the &lt;a href=&quot;https://chasingmailboxes.com/2023/09/24/coffeeneuring-challenge-2023-lucky-13/&quot;&gt;2023 Coffeeneuring Challenge&lt;/a&gt; and one I tied in with some lunchtime errands.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;Coffee at Planet Sweet&lt;/strong&gt; was the name of my destination and served up a delightful bacon and brie panini alongside a very frothy coffee.&lt;/p&gt;
+&lt;p&gt;It felt great to get out into the fresh air for a bit before back to grappling with some data for the rest of the afternoon.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-11-17_01-planet-sweet.jpg&quot;&gt;
+    &lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-11-17_01-planet-sweet.jpg&quot; alt=&quot;&quot; loading=&quot;lazy&quot; /&gt;&lt;/a&gt;
+    &lt;figcaption&gt;Bacon, brie, and coffee. Who could ask for anything more?&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;p&gt;&lt;/p&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>High voltage coffee</title>
+		<link href="https://chronicles.campachoochoo.net/electric-coffee/"/>
+		<updated>2023-11-16T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/electric-coffee/</id>
+		<content type="html">&lt;p&gt;After visiting the tooth doctor, sampling the coffee somewhere recommended to me by a friend.&lt;/p&gt;
+&lt;h2 id=&quot;today-s-ride&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/electric-coffee/#today-s-ride&quot;&gt;Today’s ride&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Following a dentist’s appointment in the morning, I was in a different part of town to usual so took it as an opportunity to try my latest Coffeeneur venture on different roads to a completely new destination for me.&lt;/p&gt;
+&lt;p&gt;I caught a break in the steady rain showers and made my way to Ealing Broadway and &lt;strong&gt;&lt;a href=&quot;https://www.electriccoffee.co.uk/&quot;&gt;Electric Coffee Co&lt;/a&gt;&lt;/strong&gt;, where I grabbed a bag of beans from Malawi alongside a tasty cortado.&lt;/p&gt;
+&lt;p&gt;The place was busy, friendly, and I’d recommend it if you’re ever in W5.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-11-16_01-electric-coffee.jpg&quot;&gt;
+    &lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-11-16_01-electric-coffee.jpg&quot; alt=&quot;&quot; loading=&quot;lazy&quot; /&gt;&lt;/a&gt;
+    &lt;figcaption&gt;A cortado at Electric Coffee Co&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;Read more about the &lt;a href=&quot;https://chasingmailboxes.com/2023/09/24/coffeeneuring-challenge-2023-lucky-13/&quot;&gt;2023 Coffeeneuring Challenge&lt;/a&gt;.&lt;/p&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>A Coffeeneuring commute</title>
+		<link href="https://chronicles.campachoochoo.net/commute-coffeeneur/"/>
+		<updated>2023-11-01T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/commute-coffeeneur/</id>
+		<content type="html">&lt;p&gt;Sneaking in a Coffeeneur during my commute to the office in central London.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;(Writing this up ten days after it took place, I just didn’t get around to it.)&lt;/em&gt;&lt;/p&gt;
+&lt;h2 id=&quot;today-s-ride&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/commute-coffeeneur/#today-s-ride&quot;&gt;Today’s ride&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;It was a miserable, rain-filled morning, and I got soaked on the ten-minute ride from home to my local railway station. I planned to take a fast train to Victoria and try &lt;strong&gt;Omotesando Koffee&lt;/strong&gt; on my way to the office in EC2. This plan disintegrated with railway signalling problems.&lt;/p&gt;
+&lt;p&gt;Instead I took the next London-bound train and it proceeded to chug slowly along the track, seemingly overtaken at every opportunity by the trains scheduled behind it. An hour and twenty minutes later than I originally thought I’d be in London, I alighted at Blackfriars.&lt;/p&gt;
+&lt;p&gt;Still, what better way to forget that journey than by finding a nice place for a hot drink and some breakfast? I’d used the time on the train to plot a route to &lt;strong&gt;The Ethiopian Coffee Company&lt;/strong&gt;, not far from King’s Cross.&lt;/p&gt;
+&lt;p&gt;Thankfully the rain had eased from earlier and, apart from getting beeped by an impatient Mercedes driver, the journey to Islington was an uneventful one.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-11-01_01-amwell-street.jpg&quot;&gt;
+    &lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-11-01_01-amwell-street.jpg&quot; alt=&quot;&quot; loading=&quot;lazy&quot; /&gt;&lt;/a&gt;
+    &lt;figcaption&gt;A lovely coffee spot&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;One cappuccino plus one cheese and ham toastie later, I was good to go!&lt;/p&gt;
+&lt;p&gt;Read more about the &lt;a href=&quot;https://chasingmailboxes.com/2023/09/24/coffeeneuring-challenge-2023-lucky-13/&quot;&gt;2023 Coffeeneuring Challenge&lt;/a&gt;.&lt;/p&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>Running errands and a Coffeeneur</title>
+		<link href="https://chronicles.campachoochoo.net/coffeeneuring-car-dropoff/"/>
+		<updated>2023-10-20T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/coffeeneuring-car-dropoff/</id>
+		<content type="html">&lt;p&gt;Time for the car’s annual MOT and service, so I made it a Coffeeneuring opportunity.&lt;/p&gt;
+&lt;h2 id=&quot;today-s-ride&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/coffeeneuring-car-dropoff/#today-s-ride&quot;&gt;Today’s ride&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;I packed my fold-up bike into the boot and set off bright and early to drop the car off at the garage.
+I made use of the new automated key drop-off locker system there and set off on my way back home.&lt;/p&gt;
+&lt;p&gt;Although rain was forecast, fortunately none arrived. There was still plenty of surface water from the last few days.&lt;/p&gt;
+&lt;p&gt;On route, just outside &lt;a href=&quot;https://en.wikipedia.org/wiki/Beehive,_Gatwick_Airport&quot;&gt;The Beehive&lt;/a&gt; — Gatwick’s original terminal building — I stopped at &lt;strong&gt;Flavours Deli&lt;/strong&gt; for a cappuccino served by the friendly lady there. And then home.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-10-20_01-coffee-at-flavours.jpg&quot;&gt;
+    &lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-10-20_01-coffee-at-flavours.jpg&quot; alt=&quot;&quot; loading=&quot;lazy&quot; /&gt;&lt;/a&gt;
+    &lt;figcaption&gt;Enjoying a cappuccino at Flavours Deli&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;Read more about the &lt;a href=&quot;https://chasingmailboxes.com/2023/09/24/coffeeneuring-challenge-2023-lucky-13/&quot;&gt;2023 Coffeeneuring Challenge&lt;/a&gt;.&lt;/p&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>Consider these steps when fresh-installing Ubuntu</title>
+		<link href="https://chronicles.campachoochoo.net/ubuntu-setup-steps/"/>
+		<updated>2023-10-15T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/ubuntu-setup-steps/</id>
+		<content type="html">&lt;p&gt;Whether freshly installing Ubuntu on a new bit of hardware or within WSL, there are a few steps I like to follow to get the basics set up nicely.&lt;/p&gt;
+&lt;p&gt;These steps are lifted directly from elsewhere but having them here in a single page makes for a helpful checklist.&lt;/p&gt;
+&lt;h2 id=&quot;software-tools&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/ubuntu-setup-steps/#software-tools&quot;&gt;Software/tools&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&quot;python&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/ubuntu-setup-steps/#python&quot;&gt;Python&lt;/a&gt;&lt;/h3&gt;
+&lt;h4 id=&quot;virtualenvwrapper&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/ubuntu-setup-steps/#virtualenvwrapper&quot;&gt;virtualenvwrapper&lt;/a&gt;&lt;/h4&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; python3-virtualenvwrapper&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then add the following to &lt;code&gt;~/.bashrc&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;WORKON_HOME&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token environment constant&quot;&gt;$HOME&lt;/span&gt;/.virtualenvs
+&lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;PROJECT_HOME&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token environment constant&quot;&gt;$HOME&lt;/span&gt;/code
+&lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;VIRTUALENVWRAPPER_PYTHON&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;/usr/bin/python3
+&lt;span class=&quot;token builtin class-name&quot;&gt;source&lt;/span&gt; /usr/share/virtualenvwrapper/virtualenvwrapper.sh&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;node-js&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/ubuntu-setup-steps/#node-js&quot;&gt;Node.js&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Here, just following the &lt;a href=&quot;https://www.theodinproject.com/lessons/foundations-installing-node-js&quot;&gt;guidance steps from The Odin Project&lt;/a&gt;.&lt;/p&gt;
+&lt;h4 id=&quot;node-version-manager&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/ubuntu-setup-steps/#node-version-manager&quot;&gt;Node Version Manager&lt;/a&gt;&lt;/h4&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt&lt;/span&gt; update &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt&lt;/span&gt; upgrade
+&lt;span class=&quot;token function&quot;&gt;curl&lt;/span&gt; -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.5/install.sh &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;bash&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# Verify nvm is installed:&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;command&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt; nvm&lt;/code&gt;&lt;/pre&gt;
+&lt;h4 id=&quot;node&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/ubuntu-setup-steps/#node&quot;&gt;Node&lt;/a&gt;&lt;/h4&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;nvm &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;--lts&lt;/span&gt;
+nvm use &lt;span class=&quot;token parameter variable&quot;&gt;--lts&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# Verify node is installed&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;node&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-v&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;configuration&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/ubuntu-setup-steps/#configuration&quot;&gt;Configuration&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&quot;bash-prompt&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/ubuntu-setup-steps/#bash-prompt&quot;&gt;Bash prompt&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;I like the minimalism offered by this &lt;a href=&quot;https://code.mendhak.com/simple-bash-prompt-for-developers-ps1-git/&quot;&gt;simple and effective Bash prompt&lt;/a&gt;, which is a result of this addition to &lt;code&gt;~/.bashrc&lt;/code&gt;:&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function-name function&quot;&gt;parse_git_dirty&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;[&lt;/span&gt; &lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;&lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; status &lt;span class=&quot;token parameter variable&quot;&gt;--porcelain&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&lt;span class=&quot;token file-descriptor important&quot;&gt;2&lt;/span&gt;&gt;&lt;/span&gt; /dev/null&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt;&lt;span class=&quot;token punctuation&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;*&quot;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;token keyword&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;token function-name function&quot;&gt;parse_git_branch&lt;/span&gt; &lt;span class=&quot;token punctuation&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; branch --no-color &lt;span class=&quot;token operator&quot;&gt;&lt;span class=&quot;token file-descriptor important&quot;&gt;2&lt;/span&gt;&gt;&lt;/span&gt; /dev/null &lt;span class=&quot;token operator&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;sed&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;/^[^*]/d&#39;&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-e&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;s/* \(.*\)/ (&lt;span class=&quot;token entity&quot; title=&quot;\1&quot;&gt;\1&lt;/span&gt;&lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;parse_git_dirty&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;)/&quot;&lt;/span&gt;
+&lt;span class=&quot;token punctuation&quot;&gt;}&lt;/span&gt;
+
+&lt;span class=&quot;token builtin class-name&quot;&gt;export&lt;/span&gt; &lt;span class=&quot;token assign-left variable&quot;&gt;&lt;span class=&quot;token environment constant&quot;&gt;PS1&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;&lt;span class=&quot;token entity&quot; title=&quot;\n&quot;&gt;\n&lt;/span&gt;&lt;span class=&quot;token entity&quot; title=&quot;\t&quot;&gt;\t&lt;/span&gt; \[&lt;span class=&quot;token entity&quot; title=&quot;\033&quot;&gt;\033&lt;/span&gt;[32m\]\w\[&lt;span class=&quot;token entity&quot; title=&quot;\033&quot;&gt;\033&lt;/span&gt;[33m\]\&lt;span class=&quot;token variable&quot;&gt;&lt;span class=&quot;token variable&quot;&gt;$(&lt;/span&gt;parse_git_branch&lt;span class=&quot;token variable&quot;&gt;)&lt;/span&gt;&lt;/span&gt;\[&lt;span class=&quot;token entity&quot; title=&quot;\033&quot;&gt;\033&lt;/span&gt;[00m\] $ &quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h3 id=&quot;git&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/ubuntu-setup-steps/#git&quot;&gt;Git&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Configure user name and e-mail, and some aliases for nicer git logging:&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; config &lt;span class=&quot;token parameter variable&quot;&gt;--global&lt;/span&gt; user.name &lt;span class=&quot;token string&quot;&gt;&quot;bob.loblaw&quot;&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; config &lt;span class=&quot;token parameter variable&quot;&gt;--global&lt;/span&gt; user.email &lt;span class=&quot;token string&quot;&gt;&quot;bob.loblaw@users.noreply.github.com&quot;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# Git log graph view, all branches, commits ordered by graph topology&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# In this view, commit ordering from top to bottom is not by time, but subject to the graph topology, i.e. the dependencies between commits can be viewed easily.&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; config &lt;span class=&quot;token parameter variable&quot;&gt;--global&lt;/span&gt; alias.l &lt;span class=&quot;token string&quot;&gt;&quot;log --format=&#39;%C(yellow)%h%C(reset) %C(auto)%d%C(reset) %s %C(magenta)(%an)%C(reset) %C(cyan)(%ar)%C(reset)&#39; --all --graph --topo-order&quot;&lt;/span&gt;
+
+&lt;span class=&quot;token comment&quot;&gt;# Git log graph view, all branches, commits ordered by commit date&lt;/span&gt;
+&lt;span class=&quot;token comment&quot;&gt;# In this view, a commit graph is displayed showing the dependencies between commits, but the ordering of the commits if by time. This leads to longer graph edges in some cases, but it is sometimes more intuitive to see commits in order of their creation time.&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;git&lt;/span&gt; config &lt;span class=&quot;token parameter variable&quot;&gt;--global&lt;/span&gt; alias.ld &lt;span class=&quot;token string&quot;&gt;&quot;log --format=&#39;%C(yellow)%h%C(reset) %C(auto)%d%C(reset) %s %C(magenta)(%an)%C(reset) %C(cyan)(%ar)%C(reset)&#39; --all --graph --date-order&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+&lt;h2 id=&quot;wsl-specific-steps&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/ubuntu-setup-steps/#wsl-specific-steps&quot;&gt;WSL-specific steps&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&quot;serve-ssh-keys-to-wsl2-from-keepassxc-on-the-host&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/ubuntu-setup-steps/#serve-ssh-keys-to-wsl2-from-keepassxc-on-the-host&quot;&gt;Serve SSH keys to WSL2 from KeepassXC on the host&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Again, thanks to the efforts of others who’ve done the hard work to &lt;a href=&quot;https://code.mendhak.com/wsl2-keepassxc-ssh/#all-together-in-one-script&quot;&gt;make this a simple setup script&lt;/a&gt;!&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token builtin class-name&quot;&gt;cd&lt;/span&gt; ~
+
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Get npiperelay&quot;&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;wget&lt;/span&gt; https://github.com/jstarks/npiperelay/releases/latest/download/npiperelay_windows_amd64.zip
+&lt;span class=&quot;token function&quot;&gt;unzip&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-o&lt;/span&gt; npiperelay_windows_amd64.zip &lt;span class=&quot;token parameter variable&quot;&gt;-d&lt;/span&gt; npiperelay
+&lt;span class=&quot;token function&quot;&gt;rm&lt;/span&gt; npiperelay_windows_amd64.zip
+
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Install socat&quot;&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;apt&lt;/span&gt; &lt;span class=&quot;token parameter variable&quot;&gt;-y&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;install&lt;/span&gt; socat
+
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Add to .bashrc&quot;&lt;/span&gt;
+&lt;span class=&quot;token function&quot;&gt;cat&lt;/span&gt; &lt;span class=&quot;token operator&quot;&gt;&amp;lt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;EOF&#39;&lt;span class=&quot;token bash punctuation&quot;&gt; &lt;span class=&quot;token operator&quot;&gt;&gt;&gt;&lt;/span&gt; ~/.bashrc&lt;/span&gt;
+export SSH_AUTH_SOCK=$HOME/.ssh/agent.sock
+
+ss -a | grep -q $SSH_AUTH_SOCK
+if [ $? -ne 0 ]; then
+    rm -f $SSH_AUTH_SOCK
+    (setsid socat UNIX-LISTEN:$SSH_AUTH_SOCK,fork EXEC:&quot;$HOME/npiperelay/npiperelay.exe -ei -s //./pipe/openssh-ssh-agent&quot;,nofork &amp;amp;) &gt;/dev/null 2&gt;&amp;amp;1
+fi
+EOF&lt;/span&gt;
+
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Reload ~/.bashrc&quot;&lt;/span&gt;
+&lt;span class=&quot;token builtin class-name&quot;&gt;exec&lt;/span&gt; &lt;span class=&quot;token function&quot;&gt;bash&lt;/span&gt;
+
+&lt;span class=&quot;token builtin class-name&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&quot;Done&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>Coffeeneuring 2023 - Ride 2</title>
+		<link href="https://chronicles.campachoochoo.net/coffeeneuring-bacon-bap/"/>
+		<updated>2023-10-15T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/coffeeneuring-bacon-bap/</id>
+		<content type="html">&lt;p&gt;Continuing the Coffeeneuring Challenge from last week, the sun’s still high but the temperature’s not.&lt;/p&gt;
+&lt;p&gt;What a difference a week makes. Temperatures are a little more seasonal than &lt;a href=&quot;https://chronicles.campachoochoo.net/coffeeneuring-kick-off/&quot;&gt;last week’s outing&lt;/a&gt; but a significant 15°C drop. Puffy jackets and jeans instead of t-shirts and shorts today!&lt;/p&gt;
+&lt;h2 id=&quot;today-s-ride&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/coffeeneuring-bacon-bap/#today-s-ride&quot;&gt;Today’s ride&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Since I was a little short on time today, I just popped to the local recreation ground’s café, making sure to meet the challenge’s two-mile round trip minimum.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-10-15_01-coffee-and-bacon-bap.jpg&quot;&gt;
+    &lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-10-15_01-coffee-and-bacon-bap.jpg&quot; alt=&quot;&quot; loading=&quot;lazy&quot; /&gt;&lt;/a&gt;
+    &lt;figcaption&gt;A bacon bap and a cappuccino&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;p&gt;&lt;/p&gt;
+&lt;p&gt;Read more about the &lt;a href=&quot;https://chasingmailboxes.com/2023/09/24/coffeeneuring-challenge-2023-lucky-13/&quot;&gt;2023 Coffeeneuring Challenge&lt;/a&gt;.&lt;/p&gt;
+</content>
+	</entry>
+	
+	<entry>
+		<title>Kicking off the 2023 Coffeeneuring Challenge</title>
+		<link href="https://chronicles.campachoochoo.net/coffeeneuring-kick-off/"/>
+		<updated>2023-10-08T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/coffeeneuring-kick-off/</id>
+		<content type="html">&lt;p&gt;In a Discord which I’m a member of, someone posted a link to the &lt;a href=&quot;https://chasingmailboxes.com/2023/09/24/coffeeneuring-challenge-2023-lucky-13/&quot;&gt;2023 Coffeeneuring Challenge&lt;/a&gt;. It tickled my interest.&lt;/p&gt;
+&lt;h2 id=&quot;the-challenge&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/coffeeneuring-kick-off/#the-challenge&quot;&gt;The challenge&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;From the site, “If you ride a bike, drink coffee or tea (or even hot chocolate, coffee stouts, or cider), and enjoy low-key adventures please consider this fall endeavor.” All of these things appeal to me, so I considered it! In short:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;ul&gt;
+&lt;li&gt;between October 7 through November 20, 2023,&lt;/li&gt;
+&lt;li&gt;ride your bike to 7 places,&lt;/li&gt;
+&lt;li&gt;at least 2 miles round trip each time,&lt;/li&gt;
+&lt;li&gt;drink 7 total cups of coffee (or another fall-type beverage), and&lt;/li&gt;
+&lt;li&gt;document your coffeeneuring (either photos, Strava tracks, journal entries, control card, etc.) in case the Coffeeneuring Challenge Committee and the Intern (yes, the Intern is back!) ever conducts an audit.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Having taken some time off exercise after the peak of the summer, it seemed an achievable, enjoyable way to get back into some regular activities and a good opportunity to explore the area around me.&lt;/p&gt;
+&lt;h3 id=&quot;today-s-ride&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/coffeeneuring-kick-off/#today-s-ride&quot;&gt;Today’s ride&lt;/a&gt;&lt;/h3&gt;
+&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-10-08_01-strava-map.jpg&quot;&gt;&lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-10-08_01-strava-map.jpg&quot; alt=&quot;Today&#39;s ride details from Strava&quot; loading=&quot;lazy&quot; style=&quot;width: calc(50% - 0.5em);&quot; /&gt;&lt;/a&gt;&lt;figcaption&gt;Today’s ride details from Strava&lt;/figcaption&gt;&lt;/figure&gt;
+&lt;p&gt;This won’t be breaking any records anytime soon — I’m not even sure the calorie burn matched the cake intake — but on an unseasonably warm October day with temperatures at around 20°C it was a fantastic way to spend an hour and a bit out of the house.&lt;/p&gt;
+&lt;p&gt;My mid-ride destination was &lt;strong&gt;&lt;a href=&quot;https://thearchive.works/pages/info&quot;&gt;The Archive&lt;/a&gt;&lt;/strong&gt;, a great cycling clubhouse which served a very good cappuccino and an excellent coffee and walnut cake.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;figure&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-10-08_02-coffee-and-walnut-cake.jpg&quot;&gt;
+    &lt;img src=&quot;https://chronicles.campachoochoo.net/assets/images/coffeeneuring-2023/2023-10-08_02-coffee-and-walnut-cake.jpg&quot; alt=&quot;&quot; loading=&quot;lazy&quot; /&gt;&lt;/a&gt;
+    &lt;figcaption&gt;Coffee cake and cappuccino&lt;/figcaption&gt;
+  &lt;/figure&gt;&lt;p&gt;&lt;/p&gt;
+&lt;h2 id=&quot;enter-the-campachoochoo-chronicles&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/coffeeneuring-kick-off/#enter-the-campachoochoo-chronicles&quot;&gt;Enter the Campachoochoo Chronicles&lt;/a&gt;&lt;/h2&gt;
+&lt;p&gt;Since one of the requirements of the challenge is to “document your coffeeneuring”, and I’ve wanted to set up an online space for writing about this kind of thing — and more — I took it as a sign to get this done.&lt;/p&gt;
+&lt;p&gt;I’m planning to include the rest of my coffeeneuring exploits as well as: noting things I’ve found interesting that I want to find again later, sharing (hopefully) useful bits of information that aren’t easy to find elsewhere, and getting better at writing.&lt;/p&gt;
+&lt;p&gt;The “campachoochoo” part of the name is courtesy of Bob Mortimer and one of his &lt;a href=&quot;https://mashable.com/article/bob-mortimer-train-guy&quot;&gt;‘Train Guy’ catchphrases&lt;/a&gt;. No affiliation with it, I just like the word!&lt;/p&gt;
+&lt;p&gt;Thanks to Mendhak’s &lt;a href=&quot;https://github.com/mendhak/eleventy-satisfactory&quot;&gt;Eleventy Satisfactory Blog Theme&lt;/a&gt; and its excellent documentation to help get me going.&lt;/p&gt;
+</content>
+	</entry>
+</feed>
