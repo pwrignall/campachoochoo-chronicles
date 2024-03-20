@@ -93,11 +93,6 @@ time {
   display: inline-block;
 }
 
-p.time {
-  text-align: right;
-  margin-top: 0;
-}
-
 /* Get footer to span all 3 columns */
 footer {
   grid-column: 1/-1;
