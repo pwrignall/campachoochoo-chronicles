@@ -5,12 +5,39 @@
 	
 	<link href="https://chronicles.campachoochoo.net/feed.xml" rel="self"/>
 	<link href="https://chronicles.campachoochoo.net/"/>
-	<updated>2024-02-07T00:00:00Z</updated>
+	<updated>2024-04-27T00:00:00Z</updated>
 	<id>https://chronicles.campachoochoo.net/</id>
 	<author>
 		<name>pwrignall</name>
 		<email></email>
 	</author>
+	
+	<entry>
+		<title>Using Datawrapper to visualise airline route maps</title>
+		<link href="https://chronicles.campachoochoo.net/route-maps-with-datawrapper/"/>
+		<updated>2024-04-27T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/route-maps-with-datawrapper/</id>
+		<content type="html">&lt;p&gt;Continuing from my &lt;a href=&quot;https://chronicles.campachoochoo.net/route-maps-with-qgis/&quot;&gt;previous post&lt;/a&gt;, I wanted to try using a different tool to plot great circles on a map and was enticed by what an online tool would offer.&lt;/p&gt;
+&lt;p&gt;Datawrapper is a data visualisation tool that I’ve long admired. It has sensible,
+&lt;a href=&quot;https://blog.datawrapper.de/dualaxis/&quot;&gt;opinionated defaults&lt;/a&gt;, abundant chart types and features, and a
+&lt;a href=&quot;https://blog.datawrapper.de/&quot;&gt;superb companion blog&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;To display quantitative data by geography, Datawrapper offers the ability to create choropleth and symbol maps. To show
+maps with icons and labels — as I’d like to do with this airline route map — we can use its locator map type.
+The result will be a responsive, static map.&lt;/p&gt;
+&lt;p&gt;To import line markers to Datawrapper, the format must be in GeoJSON. As the output of &lt;a href=&quot;https://github.com/pwrignall/gclines/&quot;&gt;the script&lt;/a&gt; I used to prepare data for QGIS was CSV, I altered it to also produce a pair of GeoJSON files: one containing
+the route lines and one with airport points and labels (Datawrapper can also load points from a CSV but I added the
+GeoJSON option anyway).&lt;/p&gt;
+&lt;p&gt;Since the steps to &lt;a href=&quot;https://academy.datawrapper.de/article/176-how-to-import-area-line-markers&quot;&gt;add line markers&lt;/a&gt;
+and &lt;a href=&quot;https://academy.datawrapper.de/article/179-how-to-import-point-markers&quot;&gt;add point markers&lt;/a&gt; are so well documented
+by Datawrapper, I’ll skip through the process except to mention that the there is a warning about the tool slowing
+down if you load lots of point markers (for example with the 24 in the example I’ve used here).&lt;/p&gt;
+&lt;p&gt;After some basic styling and tweaking label positions to try to minimise the amount of overlaps, here’s the result
+directly embedded from Datawrapper:&lt;/p&gt;
+&lt;div style=&quot;min-height:520px&quot;&gt;&lt;script type=&quot;text/javascript&quot; defer=&quot;&quot; src=&quot;https://datawrapper.dwcdn.net/ug91F/embed.js?v=7&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;img src=&quot;https://datawrapper.dwcdn.net/ug91F/full.png&quot; alt=&quot;A hypothetical airline route map to demonstrate how to make them with Datawrapper&quot; /&gt;&lt;/noscript&gt;&lt;/div&gt;
+&lt;p&gt;I think the result looks a little better on desktop than mobile. Being able to quickly and easily make a responsive,
+annotated map like this is an excellent addition to any data visualisation toolkit.&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>How to create an airline route map with QGIS</title>

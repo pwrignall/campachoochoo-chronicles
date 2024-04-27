@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Campachoochoo Chronicles</title>
+  <title>Using Datawrapper to visualise airline route maps</title>
 
   <style>
     
@@ -63,20 +63,38 @@
   <link rel="alternate" href="/feed.xml" type="application/atom+xml" title="Campachoochoo Chronicles">
   <link rel="alternate" href="/feed.json" type="application/json" title="Campachoochoo Chronicles">
 
-  <meta property="og:title" content="Campachoochoo Chronicles"/>
-  <meta property="og:url" content="https://chronicles.campachoochoo.net/2/" />
-  <meta property="og:description" content="pwrignall&#39;s internet space on coding, creations, side projects." />
-  <meta property="og:image" content="https://chronicles.campachoochoo.net/assets/images/blogprofile.png" />
+  <meta property="og:title" content="Using Datawrapper to visualise airline route maps"/>
+  <meta property="og:url" content="https://chronicles.campachoochoo.net/route-maps-with-datawrapper/" />
+  <meta property="og:description" content="Plotting airport pairs as great circles on a map with Datawrapper." />
+  <meta property="og:image" content="https://chronicles.campachoochoo.net/assets/images/qgis-routes/00-datawrapper.png" />
   <meta property="og:type" content="article" />
   <meta property="og:article:author" content="pwrignall" />
-  <meta property="og:article:tag" content="pwrignall,blog,coding,creations,side-project" />
-  <meta name="description" content="pwrignall&#39;s internet space on coding, creations, side projects.">
-  <meta name="keywords" content="pwrignall,blog,coding,creations,side-project">
+  <meta property="og:article:tag" content="dataviz,gis,datawrapper,maps" />
+  <meta name="description" content="Plotting airport pairs as great circles on a map with Datawrapper.">
+  <meta name="keywords" content="dataviz,gis,datawrapper,maps">
 
   <meta name="generator" content="Eleventy v2.0.1">
 
   <link href="/assets/images/blogprofile.png" rel="icon" type="image/x-icon" />
 
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Using Datawrapper to visualise airline route maps",
+    "description": "Plotting airport pairs as great circles on a map with Datawrapper.",
+    "image": "https://chronicles.campachoochoo.net/assets/images/qgis-routes/00-datawrapper.png",
+    "keywords": "dataviz,gis,datawrapper,maps",
+    "url": "https://chronicles.campachoochoo.net/route-maps-with-datawrapper/",
+    "dateModified": "2024-04-27",
+    "author": {
+        "@type": "Person",
+        "name": "pwrignall",
+        "url": "https://github.com/pwrignall/"
+    }
+  }
+  </script>
   
 
 </head>
@@ -86,42 +104,32 @@
     <a href="/">Campachoochoo Chronicles</a>
   </header>
   <main>
-    <h1><a href=""></a></h1>
+    <h1><a href="">Using Datawrapper to visualise airline route maps</a></h1>
     
+<time datetime="2024-04-27">Sat 27 Apr 2024</time>
 
+<article>
+<p>Continuing from my <a href="/route-maps-with-qgis/">previous post</a>, I wanted to try using a different tool to plot great circles on a map and was enticed by what an online tool would offer.</p>
+<p>Datawrapper is a data visualisation tool that I’ve long admired. It has sensible,
+<a href="https://blog.datawrapper.de/dualaxis/">opinionated defaults</a>, abundant chart types and features, and a
+<a href="https://blog.datawrapper.de/">superb companion blog</a>.</p>
+<p>To display quantitative data by geography, Datawrapper offers the ability to create choropleth and symbol maps. To show
+maps with icons and labels — as I’d like to do with this airline route map — we can use its locator map type.
+The result will be a responsive, static map.</p>
+<p>To import line markers to Datawrapper, the format must be in GeoJSON. As the output of <a href="https://github.com/pwrignall/gclines/">the script</a> I used to prepare data for QGIS was CSV, I altered it to also produce a pair of GeoJSON files: one containing
+the route lines and one with airport points and labels (Datawrapper can also load points from a CSV but I added the
+GeoJSON option anyway).</p>
+<p>Since the steps to <a href="https://academy.datawrapper.de/article/176-how-to-import-area-line-markers">add line markers</a>
+and <a href="https://academy.datawrapper.de/article/179-how-to-import-point-markers">add point markers</a> are so well documented
+by Datawrapper, I’ll skip through the process except to mention that the there is a warning about the tool slowing
+down if you load lots of point markers (for example with the 24 in the example I’ve used here).</p>
+<p>After some basic styling and tweaking label positions to try to minimise the amount of overlaps, here’s the result
+directly embedded from Datawrapper:</p>
+<div style="min-height:520px"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/ug91F/embed.js?v=7" charset="utf-8"></script><noscript><img src="https://datawrapper.dwcdn.net/ug91F/full.png" alt="A hypothetical airline route map to demonstrate how to make them with Datawrapper" /></noscript></div>
+<p>I think the result looks a little better on desktop than mobile. Being able to quickly and easily make a responsive,
+annotated map like this is an excellent addition to any data visualisation toolkit.</p>
 
-
-
-    <h3><a href="/ubuntu-setup-steps/" data-date="2023-10-15" data-tags="ubuntu,python,node,git,checklist" >Consider these steps when fresh-installing Ubuntu</a></h3>
-    <div class="excerpt">Whether freshly installing Ubuntu on a new bit of hardware or within WSL, there are a few steps I like to follow to get the basics set up nicely.</div>
-    <time datetime="2023-10-15">Sun 15 Oct 2023</time>
-
-
-
-
-    <h3><a href="/coffeeneuring-bacon-bap/" data-date="2023-10-15" data-tags="cycling,coffee,coffeeneuring2023,bacon" >Coffeeneuring 2023 - Ride 2</a></h3>
-    <div class="excerpt">Continuing the Coffeeneuring Challenge from last week, the sun’s still high but the temperature’s not.</div>
-    <time datetime="2023-10-15">Sun 15 Oct 2023</time>
-
-
-
-
-    <h3><a href="/coffeeneuring-kick-off/" data-date="2023-10-08" data-tags="cycling,coffee,coffeeneuring2023" >Kicking off the 2023 Coffeeneuring Challenge</a></h3>
-    <div class="excerpt">In a Discord which I’m a member of, someone posted a link to the 2023 Coffeeneuring Challenge. It tickled my interest.</div>
-    <time datetime="2023-10-08">Sun 8 Oct 2023</time>
-
-
-
-
-
-
-<nav aria-labelledby="pagination">
-  <ol>
-    
-    <li><a href="/">⬅ Previous</a></li>
-  </ol>
-</nav>
-
+</article>
 
 
   </main>
@@ -138,7 +146,7 @@
 
 
 
-  <!-- Current page: /2/ -->
+  <!-- Current page: /route-maps-with-datawrapper/ -->
 </body>
 
 </html>
