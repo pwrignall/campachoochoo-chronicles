@@ -36,5 +36,9 @@ directly embedded from Datawrapper:
 
 <div style="min-height:520px"><script type="text/javascript" defer src="https://datawrapper.dwcdn.net/ug91F/embed.js?v=7" charset="utf-8"></script><noscript><img src="https://datawrapper.dwcdn.net/ug91F/full.png" alt="A hypothetical airline route map to demonstrate how to make them with Datawrapper" /></noscript></div>
 
-I think the result looks a little better on desktop than mobile. Being able to quickly and easily make a responsive,
-annotated map like this is an excellent addition to any data visualisation toolkit.
+I think the result looks a little better on desktop than mobile but with some tweaking of the options and adding two
+sets of point labels, one optimised for desktop and the other for mobile, we can get some very nice results with little
+fuss because of how much effort Datawrapper has clearly spent on its users' experience.
+
+Being able to quickly and easily make a responsive, annotated map like this is invaluable and an excellent addition to
+any data visualisation toolkit.
