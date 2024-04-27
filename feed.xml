@@ -34,8 +34,11 @@ down if you load lots of point markers (for example with the 24 in the example I
 &lt;p&gt;After some basic styling and tweaking label positions to try to minimise the amount of overlaps, here’s the result
 directly embedded from Datawrapper:&lt;/p&gt;
 &lt;div style=&quot;min-height:520px&quot;&gt;&lt;script type=&quot;text/javascript&quot; defer=&quot;&quot; src=&quot;https://datawrapper.dwcdn.net/ug91F/embed.js?v=7&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;&lt;noscript&gt;&lt;img src=&quot;https://datawrapper.dwcdn.net/ug91F/full.png&quot; alt=&quot;A hypothetical airline route map to demonstrate how to make them with Datawrapper&quot; /&gt;&lt;/noscript&gt;&lt;/div&gt;
-&lt;p&gt;I think the result looks a little better on desktop than mobile. Being able to quickly and easily make a responsive,
-annotated map like this is an excellent addition to any data visualisation toolkit.&lt;/p&gt;
+&lt;p&gt;I think the result looks a little better on desktop than mobile but with some tweaking of the options and adding two
+sets of point labels, one optimised for desktop and the other for mobile, we can get some very nice results with little
+fuss because of how much effort Datawrapper has clearly spent on its users’ experience.&lt;/p&gt;
+&lt;p&gt;Being able to quickly and easily make a responsive, annotated map like this is invaluable and an excellent addition to
+any data visualisation toolkit.&lt;/p&gt;
 </content>
 	</entry>
 	
