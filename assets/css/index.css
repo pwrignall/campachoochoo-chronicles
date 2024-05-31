@@ -3,7 +3,7 @@
 
 :root {
   /* Set sans-serif & mono fonts */
-  --serif-font: Lora, Cambria, "Hoefler Text", Utopia, "Liberation Serif",
+  --serif-font: Merriweather, Cambria, "Hoefler Text", Utopia, "Liberation Serif",
   "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;
   --sans-font: "Jost", Roboto, "Nimbus Sans L", "Avenir Next", Avenir,
     "Segoe UI", Arial, Helvetica, "Helvetica Neue", sans-serif;
