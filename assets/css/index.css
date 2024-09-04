@@ -4,7 +4,7 @@
 :root {
   /* Set sans-serif & mono fonts */
   --serif-font: Merriweather, Cambria, "Hoefler Text", Utopia, "Liberation Serif",
-  "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;
+    "Nimbus Roman No9 L Regular", Times, "Times New Roman", serif;
   --sans-font: "Jost", Roboto, "Nimbus Sans L", "Avenir Next", Avenir,
     "Segoe UI", Arial, Helvetica, "Helvetica Neue", sans-serif;
   --mono-font: "Ubuntu Mono", Consolas, Menlo, Monaco, "Andale Mono", monospace;
@@ -31,33 +31,33 @@ html {
 
 /* Make the middle column slightly wider, and font slightly larger */
 body {
-  grid-template-columns: 1fr min(55rem, 90%) 1fr;
-  font-size: 1.25rem;
-  line-height: 1.7;
+  grid-template-columns: 1fr min(50rem, 90%) 1fr;
+  line-height: 1.6;
   overflow-y: scroll;
   /* stops horizontal shift due to scrollbar */
 }
 
 /* Remove padding in the header */
-body > header {
+body>header {
   padding: 0;
 }
 
 /* Styling for site title */
-body > header > a {
+body>header>a {
   max-width: 1200px;
-  margin: 1rem auto;
-  font-size: 1.5rem;
+  margin-block-start: 0.7rem !important;
+  margin: 0.7rem auto;
+  font-size: 1.4rem;
   display: block;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
   color: var(--text) !important;
   font-family: var(--sans-font);
+  text-decoration: none;
 }
 
-/* No underlines for hyperlinks */
+/* Dotted underlines for hyperlinks */
 a {
-  text-decoration: none;
+  text-decoration: dotted underline;
 }
 
 /* Don't italicize blockquote */
@@ -70,6 +70,15 @@ h1 {
   color: var(--accent);
 }
 
+h1 a,
+h2 a,
+h3 a,
+h4 a,
+h5 a,
+h6 a {
+  text-decoration: none;
+}
+
 /* Use the sans serif font for headings */
 h1,
 h2,
@@ -78,12 +87,13 @@ h4,
 h5,
 h6 {
   font-family: var(--sans-font);
-  margin-bottom: 0.25em;
+  margin-bottom: 0.4em;
 }
 
 /* This class is added by the markdown-it-anchor library. Removing the hyperlink color from headers */
 a.header-anchor {
   color: unset;
+  text-decoration: none;
 }
 
 /* Time text slightly grayed out */
@@ -236,7 +246,7 @@ nav :is(ol, ul) li {
 
 /* Video */
 
-div.video > iframe {
+div.video>iframe {
   aspect-ratio: 16 / 9;
   width: 100%;
 }
@@ -250,4 +260,60 @@ figure {
 /* Reduce code size a touch */
 code {
   font-size: 0.9em;
+}
+
+/* Reduce heading sizes */
+h1 {
+  font-size: 2.4rem;
+}
+
+h2 {
+  font-size: 2rem;
+}
+
+h3 {
+  font-size: 1.6rem;
+}
+
+h4 {
+  font-size: 1.2rem;
+}
+
+h5 {
+  font-size: 1.15rem;
+}
+
+h6 {
+  font-size: 0.96rem;
+}
+
+/* Reduce header size on mobile */
+@media only screen and (max-width: 720px) {
+  html {
+    font-size: 14px;
+  }
+
+  body,
+  div.excerpt {
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+  }
+
+  h2 {
+    font-size: 1.7rem;
+    margin-top: 1.5rem;
+  }
+
+  h3 {
+    font-size: 1.5rem;
+    margin-top: 1.5rem;
+  }
+
+  h4 {
+    font-size: 1.3rem;
+  }
 }
