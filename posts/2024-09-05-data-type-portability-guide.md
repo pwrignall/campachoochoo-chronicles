@@ -1,6 +1,6 @@
 ---
 title: Data type portability guide
-description: A guide to creating DDLs that easily ports between different database management systems.
+description: A guide to creating DDLs that easily port between different database management systems.
 date: 2024-09-05
 tags:
   - data
