@@ -29,7 +29,7 @@
 &lt;ul&gt;
 &lt;li&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/data-type-portability-guide/#portable-data-types&quot;&gt;Portable data types&lt;/a&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/data-type-portability-guide/#donts&quot;&gt;Dont’s&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/data-type-portability-guide/#donts&quot;&gt;Don’ts&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href=&quot;https://chronicles.campachoochoo.net/data-type-portability-guide/#be-aware&quot;&gt;Be aware&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 &lt;/li&gt;
@@ -74,7 +74,7 @@
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;h3 id=&quot;dont-s&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/data-type-portability-guide/#dont-s&quot;&gt;Dont’s&lt;/a&gt;&lt;/h3&gt;
+&lt;h3 id=&quot;don-ts&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/data-type-portability-guide/#don-ts&quot;&gt;Don’ts&lt;/a&gt;&lt;/h3&gt;
 &lt;h4 id=&quot;numeric&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/data-type-portability-guide/#numeric&quot;&gt;Numeric &lt;!-- omit in toc --&gt;&lt;/a&gt;&lt;/h4&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;Don’t&lt;/strong&gt; use &lt;strong&gt;unsigned numeric types&lt;/strong&gt; (i.e. positive-only) as they are not supported by PostgreSQL.&lt;/li&gt;
