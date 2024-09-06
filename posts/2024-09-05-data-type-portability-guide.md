@@ -28,7 +28,7 @@ Other database flavours are available but not covered in this guide.
 > -- <cite>Stuart Atkins</cite>
 
 - [Portable data types](#portable-data-types)
-  - [Dont's](#donts)
+  - [Don'ts](#donts)
   - [Be aware](#be-aware)
 - [Data type comparisons](#data-type-comparisons)
   - [Numeric](#numeric)
@@ -50,7 +50,7 @@ Other database flavours are available but not covered in this guide.
 | --------------------------------------------------------------------------------------------------- | ----------------------------- | ------------------------------- | -------------------- | ------ |
 | `SMALLINT`<br>`INT`/`INTEGER`<br>`BIGINT`<br>`DECIMAL`/`NUMERIC`<br>`DOUBLE PRECISION`<br>`BOOLEAN` | `CHAR`<br>`TEXT`<br>`VARCHAR` | `DATE`<br>`TIME`<br>`TIMESTAMP` | `POINT`<br>`POLYGON` | None   |
 
-### Dont's
+### Don'ts
 
 #### Numeric <!-- omit in toc -->
 
