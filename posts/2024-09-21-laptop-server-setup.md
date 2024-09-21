@@ -38,6 +38,6 @@ Then `sudo service systemd_logind restart`
 Similarly, I don't want the screen to stay on all the time when the lid is usually closed. ([Source](https://askubuntu.com/a/1076734))
 
 ```bash
-# Add to /etc/default/grub
+# Add to /etc/default/grub (needs sudo)
 GRUB_CMDLINE_LINUX_DEFAULT="consoleblank=60"
 ```
