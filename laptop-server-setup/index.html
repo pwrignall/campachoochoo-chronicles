@@ -121,7 +121,7 @@ But most of the time the machine is sitting with the lid closed on my desk. I di
 <p>Then <code>sudo service systemd_logind restart</code></p>
 <h3 id="switching-the-screen-off-when-not-in-use" tabindex="-1"><a class="header-anchor" href="#switching-the-screen-off-when-not-in-use">Switching the screen off when not in use</a></h3>
 <p>Similarly, I don’t want the screen to stay on all the time when the lid is usually closed. (<a href="https://askubuntu.com/a/1076734">Source</a>)</p>
-<pre class="language-bash"><code class="language-bash"><span class="token comment"># Add to /etc/default/grub</span>
+<pre class="language-bash"><code class="language-bash"><span class="token comment"># Add to /etc/default/grub (needs sudo)</span>
 <span class="token assign-left variable">GRUB_CMDLINE_LINUX_DEFAULT</span><span class="token operator">=</span><span class="token string">"consoleblank=60"</span></code></pre>
 
 </article>

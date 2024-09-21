@@ -30,7 +30,7 @@ But most of the time the machine is sitting with the lid closed on my desk. I di
 &lt;p&gt;Then &lt;code&gt;sudo service systemd_logind restart&lt;/code&gt;&lt;/p&gt;
 &lt;h3 id=&quot;switching-the-screen-off-when-not-in-use&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/laptop-server-setup/#switching-the-screen-off-when-not-in-use&quot;&gt;Switching the screen off when not in use&lt;/a&gt;&lt;/h3&gt;
 &lt;p&gt;Similarly, I don’t want the screen to stay on all the time when the lid is usually closed. (&lt;a href=&quot;https://askubuntu.com/a/1076734&quot;&gt;Source&lt;/a&gt;)&lt;/p&gt;
-&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Add to /etc/default/grub&lt;/span&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Add to /etc/default/grub (needs sudo)&lt;/span&gt;
 &lt;span class=&quot;token assign-left variable&quot;&gt;GRUB_CMDLINE_LINUX_DEFAULT&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;consoleblank=60&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
 </content>
 	</entry>
