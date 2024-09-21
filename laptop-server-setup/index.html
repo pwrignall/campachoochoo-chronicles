@@ -116,7 +116,6 @@
 <p>The nice thing about using a laptop as a server is that problems connecting via SSH can be easily overcome by using the in-built screen and keyboard!
 But most of the time the machine is sitting with the lid closed on my desk. I didn’t want it to go to sleep when I shut the lid. (<a href="https://askubuntu.com/questions/15520/how-can-i-tell-ubuntu-to-do-nothing-when-i-close-my-laptop-lid">Source</a>)</p>
 <pre class="language-bash"><code class="language-bash"><span class="token comment"># Add or edit to /etc/systemd/logind.conf (needs sudo)</span>
-
 <span class="token assign-left variable">HandleLidSwitch</span><span class="token operator">=</span>ignore</code></pre>
 <p>Then <code>sudo service systemd_logind restart</code></p>
 <h3 id="switching-the-screen-off-when-not-in-use" tabindex="-1"><a class="header-anchor" href="#switching-the-screen-off-when-not-in-use">Switching the screen off when not in use</a></h3>
