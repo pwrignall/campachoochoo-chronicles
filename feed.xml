@@ -5,12 +5,35 @@
 	
 	<link href="https://chronicles.campachoochoo.net/feed.xml" rel="self"/>
 	<link href="https://chronicles.campachoochoo.net/"/>
-	<updated>2024-09-05T00:00:00Z</updated>
+	<updated>2024-09-21T00:00:00Z</updated>
 	<id>https://chronicles.campachoochoo.net/</id>
 	<author>
 		<name>pwrignall</name>
 		<email></email>
 	</author>
+	
+	<entry>
+		<title>Setting up a laptop as a server</title>
+		<link href="https://chronicles.campachoochoo.net/laptop-server-setup/"/>
+		<updated>2024-09-21T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/laptop-server-setup/</id>
+		<content type="html">&lt;p&gt;I’ve set up an old laptop as a home server and wanted to write up some of the configuration and setup steps for future reference.&lt;/p&gt;
+&lt;p&gt;It’s an old Lenovo ThinkPad X121e laptop from 2011 on which I’ve installed Ubuntu server 24.04. There are just a couple of configuration tweaks I wanted to make.&lt;/p&gt;
+&lt;p&gt;I’ll also try to remember to add anything else I needed to adjust from the defaults to get things working how I need them to.&lt;/p&gt;
+&lt;h2 id=&quot;lid-closure-behaviour&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/laptop-server-setup/#lid-closure-behaviour&quot;&gt;Lid closure behaviour&lt;/a&gt;&lt;/h2&gt;
+&lt;h3 id=&quot;don-t-sleep-when-the-lid-is-closed&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/laptop-server-setup/#don-t-sleep-when-the-lid-is-closed&quot;&gt;Don’t sleep when the lid is closed&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;The nice thing about using a laptop as a server is that problems connecting via SSH can be easily overcome by using the in-built screen and keyboard!
+But most of the time the machine is sitting with the lid closed on my desk. I didn’t want it to go to sleep when I shut the lid. (&lt;a href=&quot;https://askubuntu.com/questions/15520/how-can-i-tell-ubuntu-to-do-nothing-when-i-close-my-laptop-lid&quot;&gt;Source&lt;/a&gt;)&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Add or edit to /etc/systemd/logind.conf (needs sudo)&lt;/span&gt;
+
+&lt;span class=&quot;token assign-left variable&quot;&gt;HandleLidSwitch&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;ignore&lt;/code&gt;&lt;/pre&gt;
+&lt;p&gt;Then &lt;code&gt;sudo service systemd_logind restart&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;switching-the-screen-off-when-not-in-use&quot; tabindex=&quot;-1&quot;&gt;&lt;a class=&quot;header-anchor&quot; href=&quot;https://chronicles.campachoochoo.net/laptop-server-setup/#switching-the-screen-off-when-not-in-use&quot;&gt;Switching the screen off when not in use&lt;/a&gt;&lt;/h3&gt;
+&lt;p&gt;Similarly, I don’t want the screen to stay on all the time when the lid is usually closed. (&lt;a href=&quot;https://askubuntu.com/a/1076734&quot;&gt;Source&lt;/a&gt;)&lt;/p&gt;
+&lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;&lt;span class=&quot;token comment&quot;&gt;# Add to /etc/default/grub&lt;/span&gt;
+&lt;span class=&quot;token assign-left variable&quot;&gt;GRUB_CMDLINE_LINUX_DEFAULT&lt;/span&gt;&lt;span class=&quot;token operator&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;token string&quot;&gt;&quot;consoleblank=60&quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>Data type portability guide</title>
