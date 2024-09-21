@@ -26,7 +26,6 @@ But most of the time the machine is sitting with the lid closed on my desk. I di
 
 ```bash
 # Add or edit to /etc/systemd/logind.conf (needs sudo)
-
 HandleLidSwitch=ignore
 ```
 
