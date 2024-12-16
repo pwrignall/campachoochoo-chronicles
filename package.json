@@ -33,7 +33,7 @@
     "markdown-it": "^14.1.0",
     "markdown-it-anchor": "^9.2.0",
     "prism-themes": "^1.9.0",
-    "simpledotcss": "2.3.2",
+    "simpledotcss": "2.3.3",
     "simplelightbox": "^2.14.3"
   },
   "engines": {
