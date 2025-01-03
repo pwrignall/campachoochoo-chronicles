@@ -2,13 +2,12 @@
   "name": "eleventy-satisfactory",
   "version": "1.0.0",
   "description": "My simplified opinionated eleventy theme, the focus is on content first, and less on other things.",
+  "type": "module",
   "scripts": {
     "build": "npx @11ty/eleventy",
     "bench": "DEBUG=Eleventy:Benchmark* npx @11ty/eleventy",
     "start": "ELEVENTY_ENV=development npx @11ty/eleventy --serve --watch --incremental",
-    "debug": "DEBUG=* npx @11ty/eleventy",
-    "test": "cd tests;npx smashtest",
-    "stop": "kill -9 $(lsof -t -i :8080)"
+    "debug": "DEBUG=* npx @11ty/eleventy"
   },
   "repository": {
     "type": "git",
@@ -25,21 +24,19 @@
   },
   "homepage": "https://code.mendhak.com/eleventy-satisfactory/",
   "dependencies": {
-    "@11ty/eleventy": "^2.0.1",
-    "@11ty/eleventy-plugin-rss": "1.2",
+    "@11ty/eleventy": "^3.0.0",
+    "@11ty/eleventy-plugin-rss": "^2.0.2",
     "@11ty/eleventy-plugin-syntaxhighlight": "^5.0.0",
     "clean-css": "^5.3.3",
-    "luxon": "^3.5.0",
+    "dotenv": "^16.4.5",
+    "luxon": "^3.4.4",
     "markdown-it": "^14.1.0",
-    "markdown-it-anchor": "^9.2.0",
+    "markdown-it-anchor": "^9.0.1",
     "prism-themes": "^1.9.0",
-    "simpledotcss": "2.3.3",
+    "simpledotcss": "2.1.1",
     "simplelightbox": "^2.14.3"
   },
   "engines": {
     "node": ">=18.0.0"
-  },
-  "devDependencies": {
-    "smashtest": "^1.9.2"
   }
 }
