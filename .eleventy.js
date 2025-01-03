@@ -42,6 +42,9 @@ export default async function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({"assets/.well-known": ".well-known"});
   eleventyConfig.addPassthroughCopy({ "node_modules/simplelightbox/dist/simple-lightbox.min.css": "simplelightbox/simple-lightbox.min.css" });
   eleventyConfig.addPassthroughCopy({ "node_modules/simplelightbox/dist/simple-lightbox.min.js": "simplelightbox/simple-lightbox.min.js" });
+  
+  // Copy the CNAME file to the output
+  eleventyConfig.addPassthroughCopy({ "assets/CNAME": "CNAME"})
 
   //Since moving the CSS inline eleventy no longer watches it (because it's not being copied to output), so I had to include it as a watch target.
   //Adding it to addPassthroughCopy also means it's not watched.
