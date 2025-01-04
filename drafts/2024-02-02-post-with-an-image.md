@@ -1,7 +1,6 @@
 ---
 title: Post with various images
 description: There are different ways to post images!
-date: 2025-01-03
 tags:
   - eleventy
   - markdown
