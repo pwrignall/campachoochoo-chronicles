@@ -2,6 +2,7 @@
 title: My GitHub Copilot workflow
 description: How I'm using GitHub Copilot for development at work
 date: 2025-01-04
+last_modified_at: 2025-01-05
 tags:
   - data
   - engineering
@@ -42,8 +43,8 @@ so I used VS Code with it instead. This separation actually suits me, I believe,
 always having Copilot there and it possibly becoming a crutch, it's a deliberate action to switch over to VS Code and
 make use of it.
 
-So that workflow is like me offloading a task to Copilot, it helps me come up with some ideas which I then review,
-adapt, and take forward what I need.
+It's like offloading a task to Copilot which helps me come up with some ideas I review, adapt, and then take forward
+what I need.
 
 To help with that workflow, I have the same repos cloned twice to different locations on my file system. For PyCharm
 they sit in "PyCharmProjects" and for VS Code it's "copilot_projects".
