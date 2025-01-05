@@ -2,3 +2,108 @@ User-agent: *
 Disallow: /
 
 Sitemap: https://chronicles.campachoochoo.net/sitemap.xml
+
+User-agent: GoogleBot
+Allow: /
+
+User-agent: BingBot
+Allow: /
+
+User-agent: YandexBot
+Allow: /
+
+User-agent: Baidu
+Allow: /
+
+User-agent: DuckDuckBot
+Allow: /
+
+User-agent: Seekport
+Allow: /
+
+User-agent: Sogou
+Allow: /
+
+User-agent: Seznam
+Allow: /
+
+User-agent: Cốc Cốc
+Allow: /
+
+User-agent: Yeti by Naver
+Allow: /
+
+User-agent: Dataprovider.com
+Allow: /
+
+User-agent: Yahoo Slurp
+Allow: /
+
+User-agent: ZoomInfo
+Allow: /
+
+User-agent: MSN
+Allow: /
+
+User-agent: Coveo Bot
+Allow: /
+
+User-agent: Mojeek
+Allow: /
+
+User-agent: Marginalia Search
+Allow: /
+
+User-agent: Qwantbot
+Allow: /
+
+User-agent: Mars Finder
+Allow: /
+
+User-agent: OpenRSS
+Allow: /
+
+User-agent: Innologica
+Allow: /
+
+User-agent: Feedly
+Allow: /
+
+User-agent: Feeder
+Allow: /
+
+User-agent: Feedbin
+Allow: /
+
+User-agent: rss2tg_bot
+Allow: /
+
+User-agent: Google Feed Fetcher
+Allow: /
+
+User-agent: FlipboardRSS
+Allow: /
+
+User-agent: Hatena
+Allow: /
+
+User-agent: MonitoRSS
+Allow: /
+
+User-agent: NewsBlur
+Allow: /
+
+User-agent: RSS API
+Allow: /
+
+User-agent: Nooshub
+Allow: /
+
+User-agent: FeedWind Crawler
+Allow: /
+
+User-agent: SkroutzBot
+Allow: /
+
+User-agent: Buttondown RSS-Feed-Parser
+Allow: /
