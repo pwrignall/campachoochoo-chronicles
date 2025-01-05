@@ -55,8 +55,12 @@ body > header > a {
   text-decoration: none;
 }
 
-/* Dotted underlines for hyperlinks */
 a {
+  text-decoration: none;
+}
+
+/* Dotted underlines for hyperlink hovers */
+main a:hover {
   text-decoration: dotted underline;
 }
 
@@ -68,15 +72,6 @@ blockquote {
 /* H1s should have the accent color, to make it stand out */
 h1 {
   color: var(--accent);
-}
-
-h1 a,
-h2 a,
-h3 a,
-h4 a,
-h5 a,
-h6 a {
-  text-decoration: none;
 }
 
 /* Use the heading font for headings */
@@ -249,12 +244,6 @@ nav :is(ol, ul) li {
 div.video > iframe {
   aspect-ratio: 16 / 9;
   width: 100%;
-}
-
-/* Fix figure alignment */
-
-figure {
-  text-align: center;
 }
 
 /* Reduce code size a touch */
