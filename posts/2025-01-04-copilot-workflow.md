@@ -2,6 +2,7 @@
 title: My GitHub Copilot workflow
 description: How I'm using GitHub Copilot for development at work
 date: 2025-01-04
+last_modified_at: 2025-01-05
 tags:
   - data
   - engineering
