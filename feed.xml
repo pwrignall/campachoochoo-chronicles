@@ -37,8 +37,8 @@ familiar with, or simply experimenting—Copilot makes more sense.&lt;/p&gt;
 so I used VS Code with it instead. This separation actually suits me, I believe, and I’ve kept it like that: instead of
 always having Copilot there and it possibly becoming a crutch, it’s a deliberate action to switch over to VS Code and
 make use of it.&lt;/p&gt;
-&lt;p&gt;So that workflow is like me offloading a task to Copilot, it helps me come up with some ideas which I then review,
-adapt, and take forward what I need.&lt;/p&gt;
+&lt;p&gt;It’s like offloading a task to Copilot which helps me come up with some ideas I review, adapt, and then take forward
+what I need.&lt;/p&gt;
 &lt;p&gt;To help with that workflow, I have the same repos cloned twice to different locations on my file system. For PyCharm
 they sit in “PyCharmProjects” and for VS Code it’s “copilot_projects”.&lt;/p&gt;
 &lt;p&gt;I then separately work in those IDEs and make distinct commits, either on the same branch or sometimes even create
