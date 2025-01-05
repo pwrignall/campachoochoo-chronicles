@@ -14,7 +14,7 @@ opengraph:
   image: /assets/images/article.png
 ---
 
-I think gen AI hype is annoying, but nevertheless find the technology can be useful. This is how I'm using GitHub Copilot at work.
+I think gen AI hype is annoying, but nevertheless find the technology can be useful. Here is how I'm using GitHub Copilot at work.
 
 Despite being a little exhausted of the generative artificial intelligence hype cycle we're in, it's not to the extent
 that I don't use it.
