@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Add locations to photos&#39; EXIF data</title>
+
+  <style>
+    
+    /* jost-700 - latin */
+    @font-face {
+      font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+      font-family: 'Jost';
+      font-style: normal;
+      font-weight: 700;
+      src: url('/assets/fonts/jost-v15-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    }
+    /* rubik-regular - latin */
+    @font-face {
+      font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+      font-family: 'Rubik';
+      font-style: normal;
+      font-weight: 400;
+      src: url('/assets/fonts/rubik-v28-latin-regular.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    }
+
+    /* rubik-italic - latin */
+    @font-face {
+      font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+      font-family: 'Rubik';
+      font-style: italic;
+      font-weight: 400;
+      src: url('/assets/fonts/rubik-v28-latin-italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    }
+
+    /* rubik-700 - latin */
+    @font-face {
+      font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+      font-family: 'Rubik';
+      font-style: normal;
+      font-weight: 700;
+      src: url('/assets/fonts/rubik-v28-latin-700.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    }
+
+    /* rubik-700italic - latin */
+    @font-face {
+      font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+      font-family: 'Rubik';
+      font-style: italic;
+      font-weight: 700;
+      src: url('/assets/fonts/rubik-v28-latin-700italic.woff2') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    }
+
+
+  
+
+  :root{--sans-font:-apple-system,BlinkMacSystemFont,"Avenir Next",Avenir,"Nimbus Sans L",Roboto,"Noto Sans","Segoe UI",Arial,Helvetica,"Helvetica Neue",sans-serif;--mono-font:Consolas,Menlo,Monaco,"Andale Mono","Ubuntu Mono",monospace;--standard-border-radius:5px;--border-width:1px;--bg:#fff;--accent-bg:#f5f7ff;--text:#212121;--text-light:#585858;--border:#898ea4;--accent:#0d47a1;--accent-hover:#1266e2;--accent-text:var(--bg);--code:#d81b60;--preformatted:#444;--marked:#fd3;--disabled:#efefef}@media (prefers-color-scheme:dark){:root{color-scheme:dark;--bg:#212121;--accent-bg:#2b2b2b;--text:#dcdcdc;--text-light:#ababab;--accent:#ffb300;--accent-hover:#ffe099;--accent-text:var(--bg);--code:#f06292;--preformatted:#ccc;--disabled:#111}img,video{opacity:.8}}*,:after,:before{box-sizing:border-box}input,progress,select,textarea{-webkit-appearance:none;-moz-appearance:none;appearance:none}html{font-family:var(--sans-font);scroll-behavior:smooth}body{color:var(--text);background-color:var(--bg);grid-template-columns:1fr min(45rem,90%) 1fr;margin:0;font-size:1.15rem;line-height:1.5;display:grid}body>*{grid-column:2}body>header{background-color:var(--accent-bg);border-bottom:var(--border-width) solid var(--border);text-align:center;grid-column:1/-1;padding:0 .5rem 2rem}body>header>:only-child{margin-block-start:2rem}body>header h1{max-width:1200px;margin:1rem auto}body>header p{max-width:40rem;margin:1rem auto}main{padding-top:1.5rem}body>footer{color:var(--text-light);text-align:center;border-top:var(--border-width) solid var(--border);margin-top:4rem;padding:2rem 1rem 1.5rem;font-size:.9rem}h1{font-size:3rem}h2{margin-top:3rem;font-size:2.6rem}h3{margin-top:3rem;font-size:2rem}h4{font-size:1.44rem}h5{font-size:1.15rem}h6{font-size:.96rem}p{margin:1.5rem 0}h1,h2,h3,h4,h5,h6,p{overflow-wrap:break-word}h1,h2,h3{line-height:1.1}@media only screen and (width<=720px){h1{font-size:2.5rem}h2{font-size:2.1rem}h3{font-size:1.75rem}h4{font-size:1.25rem}}a,a:visited{color:var(--accent)}a:hover{text-decoration:none}.button,a.button,button,input[type=button],input[type=reset],input[type=submit]{border:var(--border-width) solid var(--accent);background-color:var(--accent);color:var(--accent-text);padding:.5rem .9rem;line-height:normal;text-decoration:none}.button[aria-disabled=true],button[disabled],input:disabled,select:disabled,textarea:disabled{cursor:not-allowed;background-color:var(--disabled);border-color:var(--disabled);color:var(--text-light)}input[type=range]{padding:0}abbr[title]{cursor:help;text-decoration-line:underline;text-decoration-style:dotted}.button:not([aria-disabled=true]):hover,button:enabled:hover,input[type=button]:enabled:hover,input[type=reset]:enabled:hover,input[type=submit]:enabled:hover{background-color:var(--accent-hover);border-color:var(--accent-hover);cursor:pointer}.button:focus-visible,button:focus-visible:where(:enabled),input:enabled:focus-visible:where([type=submit],[type=reset],[type=button]){outline:2px solid var(--accent);outline-offset:1px}header nav{padding:1rem 0 0;font-size:1rem;line-height:2}header nav ol,header nav ul{flex-flow:wrap;place-content:space-around center;align-items:center;margin:0;padding:0;list-style-type:none;display:flex}header nav ol li,header nav ul li{display:inline-block}header nav a,header nav a:visited{border:var(--border-width) solid var(--border);border-radius:var(--standard-border-radius);color:var(--text);margin:0 .5rem 1rem;padding:.1rem 1rem;text-decoration:none;display:inline-block}header nav a.current,header nav a:hover,header nav a[aria-current=page],header nav a[aria-current=true]{border-color:var(--accent);color:var(--accent);cursor:pointer}@media only screen and (width<=720px){header nav a{border:none;padding:0;line-height:1;text-decoration:underline}}aside,details,pre,progress{background-color:var(--accent-bg);border:var(--border-width) solid var(--border);border-radius:var(--standard-border-radius);margin-bottom:1rem}aside{float:right;width:30%;margin-inline-start:15px;padding:0 15px;font-size:1rem}[dir=rtl] aside{float:left}@media only screen and (width<=720px){aside{float:none;width:100%;margin-inline-start:0}}article,dialog,fieldset{border:var(--border-width) solid var(--border);border-radius:var(--standard-border-radius);margin-bottom:1rem;padding:1rem}article h2:first-child,article h3:first-child,section h2:first-child,section h3:first-child{margin-top:1rem}section{border-top:var(--border-width) solid var(--border);border-bottom:var(--border-width) solid var(--border);margin:3rem 0;padding:2rem 1rem}section+section,section:first-child{border-top:0;padding-top:0}section+section{margin-top:0}section:last-child{border-bottom:0;padding-bottom:0}details{padding:.7rem 1rem}summary{cursor:pointer;word-break:break-all;margin:-.7rem -1rem;padding:.7rem 1rem;font-weight:700}details[open]>summary+*{margin-top:0}details[open]>summary{margin-bottom:.5rem}details[open]>:last-child{margin-bottom:0}table{border-collapse:collapse;margin:1.5rem 0}figure>table{width:max-content;margin:0}td,th{border:var(--border-width) solid var(--border);text-align:start;padding:.5rem}th{background-color:var(--accent-bg);font-weight:700}tr:nth-child(2n){background-color:var(--accent-bg)}table caption{margin-bottom:.5rem;font-weight:700}.button,button,input,select,textarea{font-size:inherit;border-radius:var(--standard-border-radius);box-shadow:none;max-width:100%;margin-bottom:.5rem;padding:.5rem;font-family:inherit;display:inline-block}input,select,textarea{color:var(--text);background-color:var(--bg);border:var(--border-width) solid var(--border)}label{display:block}textarea:not([cols]){width:100%}select:not([multiple]){background-image:linear-gradient(45deg,transparent 49%,var(--text)51%),linear-gradient(135deg,var(--text)51%,transparent 49%);background-position:calc(100% - 15px),calc(100% - 10px);background-repeat:no-repeat;background-size:5px 5px,5px 5px;padding-inline-end:25px}[dir=rtl] select:not([multiple]){background-position:10px,15px}input[type=checkbox],input[type=radio]{vertical-align:middle;width:min-content;position:relative}input[type=checkbox]+label,input[type=radio]+label{display:inline-block}input[type=radio]{border-radius:100%}input[type=checkbox]:checked,input[type=radio]:checked{background-color:var(--accent)}input[type=checkbox]:checked:after{content:" ";border-right:solid var(--bg) .08em;border-bottom:solid var(--bg) .08em;background-color:#0000;border-radius:0;width:.18em;height:.32em;font-size:1.8em;position:absolute;top:.05em;left:.17em;transform:rotate(45deg)}input[type=radio]:checked:after{content:" ";background-color:var(--bg);border-radius:100%;width:.25em;height:.25em;font-size:32px;position:absolute;top:.125em;left:.125em}@media only screen and (width<=720px){input,select,textarea{width:100%}}input[type=color]{height:2.5rem;padding:.2rem}input[type=file]{border:0}hr{height:var(--border-width);background:var(--border);border:none;margin:1rem auto}mark{border-radius:var(--standard-border-radius);background-color:var(--marked);color:#000;padding:2px 5px}mark a{color:#0d47a1}img,video{border-radius:var(--standard-border-radius);max-width:100%;height:auto}figure{margin:0;display:block;overflow-x:auto}figure>img,figure>picture>img{margin-inline:auto;display:block}figcaption{text-align:center;color:var(--text-light);margin-block:1rem;font-size:.9rem}blockquote{border-inline-start:.35rem solid var(--accent);color:var(--text-light);margin-block:2rem;margin-inline:2rem 0;padding:.4rem .8rem;font-style:italic}cite{color:var(--text-light);font-size:.9rem;font-style:normal}dt{color:var(--text-light)}code,kbd,pre,pre span,samp{font-family:var(--mono-font);color:var(--code)}kbd{color:var(--preformatted);border:var(--border-width) solid var(--preformatted);border-bottom:3px solid var(--preformatted);border-radius:var(--standard-border-radius);padding:.1rem .4rem}pre{max-width:100%;color:var(--preformatted);padding:1rem 1.4rem;overflow:auto}pre code{color:var(--preformatted);background:0 0;margin:0;padding:0}progress{width:100%}progress:indeterminate{background-color:var(--accent-bg)}progress::-webkit-progress-bar{border-radius:var(--standard-border-radius);background-color:var(--accent-bg)}progress::-webkit-progress-value{border-radius:var(--standard-border-radius);background-color:var(--accent)}progress::-moz-progress-bar{border-radius:var(--standard-border-radius);background-color:var(--accent);transition-property:width;transition-duration:.3s}progress:indeterminate::-moz-progress-bar{background-color:var(--accent-bg)}dialog{background-color:var(--bg);max-width:40rem;margin:auto}dialog::backdrop{background-color:var(--bg);opacity:.8}@media only screen and (width<=720px){dialog{max-width:calc(100vw - 2rem)}}sub,sup{vertical-align:baseline;position:relative}sup{top:-.4em}sub{top:.3em}.notice{background:var(--accent-bg);border:var(--border-width) solid var(--border);border-radius:var(--standard-border-radius);margin:2rem 0;padding:1.5rem}@media print{@page{margin:1cm}body{display:block}body>header{background-color:unset}body>footer,body>header nav{display:none}article{border:none;padding:0}a[href^=http]:after{content:" <" attr(href) ">"}abbr[title]:after{content:" (" attr(title) ")"}a{text-decoration:none}p{widows:3;orphans:3}hr{border-top:var(--border-width) solid var(--border)}mark{border:var(--border-width) solid var(--border)}figure,img,pre,svg,table{break-inside:avoid}pre code{white-space:pre-wrap}}:root{--body-font:Rubik,Roboto,"Nimbus Sans L","Avenir Next",Avenir,"Segoe UI",Arial,Helvetica,"Helvetica Neue",sans-serif;--heading-font:Jost,sans-serif;--mono-font:"Ubuntu Mono",Consolas,Menlo,Monaco,"Andale Mono",monospace;--bg:#fafafa;--accent:#1197b0;--accent-bg:#f5f8f9;--code:#e16e00}@media (prefers-color-scheme:dark){:root{--bg:hsl(223, 42%, 10%);--accent:#41a2b5;--accent-bg:hsl(223, 42%, 7%);--code:#e16e00}}html{font-family:var(--body-font)}body{grid-template-columns:1fr min(55rem,90%) 1fr;font-size:1.25rem;line-height:1.6;overflow-y:scroll}body>header{padding:0}body>header>a{max-width:1200px;margin-block-start:0.7rem!important;margin:.7rem auto;font-size:1.4rem;display:block;text-transform:uppercase;color:var(--text)!important;font-family:var(--heading-font);text-decoration:none}a{text-decoration:none}main a:hover{text-decoration:dotted underline}blockquote{font-style:normal}h1{color:var(--accent)}h1,h2,h3,h4,h5,h6{font-family:var(--heading-font);margin-bottom:.4em}a.header-anchor{color:unset;text-decoration:none}time{color:var(--text-light);font-size:1rem;display:inline-block}footer{grid-column:1/-1;background-color:var(--accent-bg);padding-top:3rem;box-shadow:0 50vh 0 50vh var(--accent-bg)}footer ul{margin:0;padding:0;list-style-type:none}footer li{display:inline-block;padding-top:5px;padding-bottom:5px}.excerpt{font-size:1.25rem;padding-bottom:.5em}article{border:none;padding:0;padding-bottom:2rem}.bottomlinks{font-family:var(--heading-font);font-size:1.2rem}.photostream{padding-top:2rem;padding-bottom:2rem}.sl-overlay{background:#000!important}nav{display:inline;text-align:center;margin-top:2rem;width:100%}nav :is(ol,ul) li{display:inline;list-style-type:none;padding:.2rem .5rem;text-decoration:none;margin:0 .5rem;float:right}:root{--notice-color:var(--text);--notice-bg:var(--accent-bg);--notice-info-color:var(--text);--notice-info-bg:#d8ebf1;--notice-success-color:var(--text);--notice-success-bg:#d9edd9;--notice-warning-color:var(--text);--notice-warning-bg:#f7e5cd;--notice-danger-color:var(--text);--notice-danger-bg:#fcdfde}@media (prefers-color-scheme:dark){:root{--notice-color:var(--text);--notice-bg:var(--accent-bg);--notice-info-color:#76a9fa;--notice-info-bg:var(--accent-bg);--notice-success-color:#31c48d;--notice-success-bg:var(--accent-bg);--notice-warning-color:#faca15;--notice-warning-bg:var(--accent-bg);--notice-danger-color:#f98080;--notice-danger-bg:var(--accent-bg)}}.notice{background:var(--accent-bg);border-radius:5px;padding:1rem;margin:2rem 0;font-size:1rem}.notice a{color:unset;text-decoration:underline}.notice.info{color:var(--notice-info-color);background-color:var(--notice-info-bg)}.notice.success{color:var(--notice-success-color);background-color:var(--notice-success-bg)}.notice.warning{color:var(--notice-warning-color);background-color:var(--notice-warning-bg)}.notice.danger{color:var(--notice-danger-color);background-color:var(--notice-danger-bg)}.gist td{all:initial}div.video>iframe{aspect-ratio:16/9;width:100%}code{font-size:.9em}h1{font-size:2.4rem}h2{font-size:2rem}h3{font-size:1.6rem}h4{font-size:1.2rem}h5{font-size:1.15rem}h6{font-size:.96rem}@media only screen and (max-width:720px){html{font-size:14px}body,div.excerpt{font-size:1.1rem}h1{font-size:1.9rem}h2{font-size:1.7rem;margin-top:1.5rem}h3{font-size:1.5rem;margin-top:1.5rem}h4{font-size:1.3rem}}code[class*=language-],pre[class*=language-]{color:#f8f8f2;background:0 0;font-family:Consolas,Monaco,'Andale Mono','Ubuntu Mono',monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.5;-moz-tab-size:4;-o-tab-size:4;tab-size:4;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:1em;margin:.5em 0;overflow:auto;border-radius:.3em}:not(pre)>code[class*=language-],pre[class*=language-]{background:#2b2b2b}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal}.token.cdata,.token.comment,.token.doctype,.token.prolog{color:#d4d0ab}.token.punctuation{color:#fefefe}.token.constant,.token.deleted,.token.property,.token.symbol,.token.tag{color:#ffa07a}.token.boolean,.token.number{color:#00e0e0}.token.attr-name,.token.builtin,.token.char,.token.inserted,.token.selector,.token.string{color:#abe338}.language-css .token.string,.style .token.string,.token.entity,.token.operator,.token.url,.token.variable{color:#00e0e0}.token.atrule,.token.attr-value,.token.function{color:gold}.token.keyword{color:#00e0e0}.token.important,.token.regex{color:gold}.token.bold,.token.important{font-weight:700}.token.italic{font-style:italic}.token.entity{cursor:help}@media screen and (-ms-high-contrast:active){code[class*=language-],pre[class*=language-]{color:windowText;background:window}:not(pre)>code[class*=language-],pre[class*=language-]{background:window}.token.important{background:highlight;color:window;font-weight:400}.token.atrule,.token.attr-value,.token.function,.token.keyword,.token.operator,.token.selector{font-weight:700}.token.attr-value,.token.comment,.token.doctype,.token.function,.token.keyword,.token.operator,.token.property,.token.string{color:highlight}.token.attr-value,.token.url{font-weight:400}}
+  </style>
+
+  <link rel="sitemap" type="application/xml" title="Sitemap" href="/sitemap.xml">
+  <link rel="alternate" href="/feed.xml" type="application/atom+xml" title="Campachoochoo Chronicles">
+  <link rel="alternate" href="/feed.json" type="application/json" title="Campachoochoo Chronicles">
+
+  <meta property="og:title" content="Add locations to photos&#39; EXIF data">
+  <meta property="og:url" content="https://chronicles.campachoochoo.net/geotag-photos-from-a-dumb-camera/">
+  <meta property="og:description" content="How to geotag photos taken with a &quot;dumb&quot; camera">
+  <meta property="og:image" content="https://chronicles.campachoochoo.net/assets/images/geotag-photos/00-by-Stanislav-Kondratiev-pexels.jpg">
+  <meta property="og:type" content="article">
+  <meta property="og:article:author" content="pwrignall">
+  <meta property="og:article:tag" content="exif,photography,camera">
+  <meta name="description" content="How to geotag photos taken with a &quot;dumb&quot; camera">
+  <meta name="keywords" content="exif,photography,camera">
+
+  <meta name="generator" content="Eleventy v3.0.0">
+
+  <link href="/assets/images/blogprofile.png" rel="icon" type="image/x-icon">
+
+  
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    "headline": "Add locations to photos&#39; EXIF data",
+    "description": "How to geotag photos taken with a &quot;dumb&quot; camera",
+    "image": "https://chronicles.campachoochoo.net/assets/images/geotag-photos/00-by-Stanislav-Kondratiev-pexels.jpg",
+    "keywords": "exif,photography,camera",
+    "url": "https://chronicles.campachoochoo.net/geotag-photos-from-a-dumb-camera/",
+    "dateModified": "2025-08-16",
+    "author": {
+        "@type": "Person",
+        "name": "pwrignall",
+        "url": "https://github.com/pwrignall/"
+    }
+  }
+  </script>
+  
+
+</head>
+
+<body>
+  <header>
+    <a href="/">Campachoochoo Chronicles</a>
+  </header>
+  <main>
+    <h1><a href="">Add locations to photos’ EXIF data</a></h1>
+    
+<time datetime="2025-08-16">Sat 16 Aug 2025</time>
+
+<article>
+<p>I have an older camera without “smart” features like geotagging. But I do like to organise photos by location so here’s how I go about adding that data in retrospect.</p>
+<h2 id="collecting-the-geodata-with-gpslogger" tabindex="-1"><a class="header-anchor" href="#collecting-the-geodata-with-gpslogger">Collecting the geodata with GPSLogger</a></h2>
+<p>The excellent, lightweight <a href="https://gpslogger.app/">GPSLogger</a> app is running on my mobile phone constantly. It records a point every 15 seconds and backs up the day’s record to Google Drive as a zipped GPX file at the end of the day.</p>
+<p>Therefore we know from these files where the phone was when the photo was taken. Assuming the camera was nearby, all that needs to be done is merge the geodata from the GPX file into a photo’s EXIF metadata.</p>
+<h2 id="enter-exiftool" tabindex="-1"><a class="header-anchor" href="#enter-exiftool">Enter exiftool</a></h2>
+<p>To do that, use <a href="https://exiftool.org/">exiftool</a> to modify the image’s metadata. Assuming a selection of GPX files in ‘~/gps/’:</p>
+<pre class="language-bash"><code class="language-bash">exiftool <span class="token parameter variable">-geotag</span> <span class="token string">"~/gps/*20250816*.gpx"</span> *.jpg</code></pre>
+<p>Note that this will modify the image’s metadata directly in the file (caveat: I have seen arguments that this should be avoided in preference of metadata in ‘sidecar’ files). By default, exiftool creates a copy of the image, adds a suffix _original to the original and modifies the one with the original filename. This is good for checking that the changes made are as expected, and undoing them if not.</p>
+<p>With some confidence built, add <code>-overwrite_original</code> to skip that copy step.</p>
+<p>Looking to ‘discard changes’ on several files and restore the originals?</p>
+<pre class="language-bash"><code class="language-bash"><span class="token keyword">for</span> <span class="token for-or-select variable">file</span> <span class="token keyword">in</span> *_original<span class="token punctuation">;</span> <span class="token keyword">do</span> <span class="token function">mv</span> <span class="token string">"<span class="token variable">$file</span>"</span> <span class="token string">"<span class="token variable">${file<span class="token operator">%</span>_original}</span>"</span><span class="token punctuation">;</span> <span class="token keyword">done</span></code></pre>
+<h2 id="o-joy-of-timestamps" tabindex="-1"><a class="header-anchor" href="#o-joy-of-timestamps">O, joy of timestamps</a></h2>
+<p><em>A bane of a data engineer, they come back to haunt me in my free time.</em></p>
+<p>From what I can gather, different cameras have different conventions for recording timestamps. None of the timestamp fields outright include timezones or timezone offsets.</p>
+<aside>The photo organiser I use, <a href="https://github.com/jmathai/elodie">Elodie</a>, renames files using the timestamp without offset. I would prefer to rename them using UTC time so will look to amend that at some point.</aside>
+<p>From <a href="https://photo.stackexchange.com/questions/96711/why-dont-exif-tags-contain-time-zone-information#comment224110_97149">EXIF v2.31</a> it appears that some convention was standardised to include the offset in a separate field, but from my limited sample size this has varying degrees of adoption. The Google Pixel follows the standard but the Fujifilm X100T does not (at least on the firmware I’m running and not in a field that is obvious to me).</p>
+<p>Not sure if you’ve set the timezone correctly on your camera? Good luck! It’s a bit of a guess for me to figure out what setting I had (e.g. if I’d changed the time to local time on travels) for photos I took a while ago. For my future self, it’s probably simplest to set the camera’s time to UTC and not worry about recording what the local time was e.g. during travelling or daylight savings.</p>
+<h3 id="ensuring-a-good-timestamp-merge" tabindex="-1"><a class="header-anchor" href="#ensuring-a-good-timestamp-merge">Ensuring a good timestamp merge</a></h3>
+<p>The GPS timestamps from GPSLogger are in UTC and the standard for EXIF is to have the GPS timestamp in UTC also. So a basic approach to take on photos without any timezone offset information is to convert EXIF timestamps to the local time and then use that known offset when doing the <code>-geotag</code> merge.</p>
+<p>This might need a bit of investigation and trial and error i.e. making a change, doing a dry-run geotag, looking up the resolved coordinates, and trying to remember if the photo looks like it was taken where it resolved to.</p>
+<p>Show all timestamp info (<a href="https://superuser.com/questions/1840199/how-to-fix-timezone-of-images-using-exiftool#comment2908853_1840199">source</a>):</p>
+<pre class="language-bash"><code class="language-bash">exiftool <span class="token parameter variable">-time:all</span> <span class="token parameter variable">-G1</span> <span class="token parameter variable">-a</span> <span class="token parameter variable">-s</span> image.jpg</code></pre>
+<p>Shift all timestamps forward by an hour:</p>
+<pre class="language-bash"><code class="language-bash">exiftool <span class="token string">"-AllDates+=1"</span> image.jpg</code></pre>
+<p>Merge with the UTC offset defined for <code>-geotime</code>:</p>
+<pre class="language-bash"><code class="language-bash">exiftool <span class="token parameter variable">-geotag</span> <span class="token string">"~/gps/*"</span> <span class="token string">"-geotime&lt;<span class="token variable">${DateTimeOriginal}</span>+HH:MM"</span> *.jpg</code></pre>
+<p>The <a href="https://www.reddit.com/r/photography/comments/gbks0c/guide_to_using_exiftool_to_correct_the_time/">Reddit post</a> I found the <code>-geotime</code> information on also has suggestions for no interpolation (<code>-api GeoMaxIntSecs=0</code>) and using the closest found coordinate within a set time window (<code>-api GeoMaxExtSecs=120</code> for 2 minutes) which seem like good options to consider.</p>
+<p>This is one of those situations where I think ‘good enough’ is probably enough. The results may not be 100% precise but if they end up being in the right city/country, that’ll do for me.</p>
+
+</article>
+
+
+  </main>
+
+  <footer>
+
+    <ul class="bottomlinks"><li><a href="https://github.com/pwrignall/">🐛 GitHub</a></li>&nbsp;&nbsp;&nbsp;<li><a href="/feed.xml">🌐 Feed</a></li>&nbsp;&nbsp;&nbsp;</ul>
+
+    <p>&mdash; &copy; 2025 pwrignall &mdash;</p>
+
+  </footer>
+
+
+
+
+
+  <!-- Current page: /geotag-photos-from-a-dumb-camera/ -->
+</body>
+
+</html>
