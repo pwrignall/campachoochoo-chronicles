@@ -48,6 +48,7 @@ body > header > a {
   margin-block-start: 0.7rem !important;
   margin: 0.7rem auto;
   font-size: 1.4rem;
+  font-weight: 700;
   display: block;
   text-transform: uppercase;
   color: var(--text) !important;
@@ -130,6 +131,12 @@ article {
   border: none;
   padding: 0;
   padding-bottom: 2rem;
+}
+
+article > p:first-of-type {
+  font-size: 1.6rem;
+  line-height: 1.25;
+  font-weight: 300;
 }
 
 /* article a {
