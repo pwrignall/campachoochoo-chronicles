@@ -8,21 +8,23 @@
 
   <style>
     {# Couldn't put this into a .css file for minification, because the font URLs need the | htmlBaseUrl helper.  #}
+
     /* jost-700 - latin */
     @font-face {
       font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
       font-family: 'Jost';
       font-style: normal;
       font-weight: 700;
-      src: url('{{"/assets/fonts/jost-v15-latin-700.woff2" | htmlBaseUrl }}') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+      src: url('{{"/assets/fonts/jost-v19-latin-700.woff2" | htmlBaseUrl }}') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
     }
+
     /* rubik-regular - latin */
     @font-face {
       font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
       font-family: 'Rubik';
       font-style: normal;
       font-weight: 400;
-      src: url('{{"/assets/fonts/rubik-v28-latin-regular.woff2" | htmlBaseUrl }}') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+      src: url('{{"/assets/fonts/rubik-v30-latin-regular.woff2" | htmlBaseUrl }}') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
     }
 
     /* rubik-italic - latin */
@@ -31,7 +33,7 @@
       font-family: 'Rubik';
       font-style: italic;
       font-weight: 400;
-      src: url('{{"/assets/fonts/rubik-v28-latin-italic.woff2" | htmlBaseUrl }}') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+      src: url('{{"/assets/fonts/rubik-v30-latin-italic.woff2" | htmlBaseUrl }}') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
     }
 
     /* rubik-700 - latin */
@@ -40,7 +42,7 @@
       font-family: 'Rubik';
       font-style: normal;
       font-weight: 700;
-      src: url('{{"/assets/fonts/rubik-v28-latin-700.woff2" | htmlBaseUrl }}') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+      src: url('{{"/assets/fonts/rubik-v30-latin-700.woff2" | htmlBaseUrl }}') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
     }
 
     /* rubik-700italic - latin */
@@ -49,7 +51,16 @@
       font-family: 'Rubik';
       font-style: italic;
       font-weight: 700;
-      src: url('{{"/assets/fonts/rubik-v28-latin-700italic.woff2" | htmlBaseUrl }}') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+      src: url('{{"/assets/fonts/rubik-v30-latin-700italic.woff2" | htmlBaseUrl }}') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
+    }
+
+    /* rubik-300 - latin */
+    @font-face {
+      font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+      font-family: 'Rubik';
+      font-style: normal;
+      font-weight: 300;
+      src: url('{{"/assets/fonts/rubik-v30-latin-300.woff2" | htmlBaseUrl }}') format('woff2'); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
     }
 
 
