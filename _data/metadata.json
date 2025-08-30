@@ -3,7 +3,7 @@
   "url": "https://chronicles.campachoochoo.net/",
   "pathPrefix": "/",
   "language": "en",
-  "paginationSize": 7,
+  "paginationSize": 50,
   "favicon": "/assets/images/blogprofile.png",
   "description": "pwrignall's internet space on coding, creations, side projects.",
   "tags": ["pwrignall", "blog", "coding", "creations", "side-project"],
