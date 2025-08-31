@@ -5,12 +5,22 @@
 	
 	<link href="https://chronicles.campachoochoo.net/feed.xml" rel="self"/>
 	<link href="https://chronicles.campachoochoo.net/"/>
-	<updated>2025-08-16T00:00:00Z</updated>
+	<updated>2025-08-31T00:00:00Z</updated>
 	<id>https://chronicles.campachoochoo.net/</id>
 	<author>
 		<name>pwrignall</name>
 		<email></email>
 	</author>
+	
+	<entry>
+		<title>Good reasons not to use a password manager</title>
+		<link href="https://chronicles.campachoochoo.net/reasons-not-to-use-password-manager/"/>
+		<updated>2025-08-31T00:00:00Z</updated>
+		<id>https://chronicles.campachoochoo.net/reasons-not-to-use-password-manager/</id>
+		<content type="html">&lt;p&gt;Password managers afford the option of not re-using the same password across user logins. I use &lt;a href=&quot;https://keepassxc.org/&quot;&gt;KeePassXC&lt;/a&gt; and &lt;a href=&quot;https://www.keepassdx.com/&quot;&gt;KeePassDX&lt;/a&gt;, but here are some reasons NOT to use a password manager.&lt;/p&gt;
+&lt;p&gt;Nope, I couldn’t think of any.&lt;/p&gt;
+</content>
+	</entry>
 	
 	<entry>
 		<title>Add locations to photos&#39; EXIF data</title>
