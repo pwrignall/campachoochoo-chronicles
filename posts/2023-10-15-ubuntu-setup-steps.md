@@ -2,7 +2,7 @@
 title: Consider these steps when fresh-installing Ubuntu
 description: A quick reference for getting an Ubuntu set-up set up.
 date: 2023-10-15
-last_modified_at: 2023-10-16
+last_modified_at: 2025-09-02
 tags:
   - ubuntu
   - python
@@ -79,7 +79,7 @@ export PS1="\n\t \[\033[32m\]\w\[\033[33m\]\$(parse_git_branch)\[\033[00m\] $ "
 
 ### Git
 
-Configure user name and e-mail, and some aliases for nicer git logging:
+Configure user name and e-mail, some aliases for nicer git logging, and automatically setting up remote branches on pushing a locally-created one:
 
 ```bash
 git config --global user.name "bob.loblaw"
@@ -92,6 +92,8 @@ git config --global alias.l "log --format='%C(yellow)%h%C(reset) %C(auto)%d%C(re
 # Git log graph view, all branches, commits ordered by commit date
 # In this view, a commit graph is displayed showing the dependencies between commits, but the ordering of the commits if by time. This leads to longer graph edges in some cases, but it is sometimes more intuitive to see commits in order of their creation time.
 git config --global alias.ld "log --format='%C(yellow)%h%C(reset) %C(auto)%d%C(reset) %s %C(magenta)(%an)%C(reset) %C(cyan)(%ar)%C(reset)' --all --graph --date-order"
+
+git config --global push.autoSetupRemote true
 ```
 
 ## WSL-specific steps
