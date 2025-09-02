@@ -97,7 +97,7 @@
     "image": "https://chronicles.campachoochoo.net/assets/images/ubuntu-setup-steps/00.jpg",
     "keywords": "ubuntu,python,node,git,checklist",
     "url": "https://chronicles.campachoochoo.net/ubuntu-setup-steps/",
-    "dateModified": "2023-10-16",
+    "dateModified": "2025-09-02",
     "author": {
         "@type": "Person",
         "name": "pwrignall",
@@ -154,7 +154,7 @@ nvm use <span class="token parameter variable">--lts</span>
 
 <span class="token builtin class-name">export</span> <span class="token assign-left variable"><span class="token environment constant">PS1</span></span><span class="token operator">=</span><span class="token string">"<span class="token entity" title="\n">\n</span><span class="token entity" title="\t">\t</span> \[<span class="token entity" title="\033">\033</span>[32m\]\w\[<span class="token entity" title="\033">\033</span>[33m\]\<span class="token variable"><span class="token variable">$(</span>parse_git_branch<span class="token variable">)</span></span>\[<span class="token entity" title="\033">\033</span>[00m\] $ "</span></code></pre>
 <h3 id="git" tabindex="-1"><a class="header-anchor" href="#git">Git</a></h3>
-<p>Configure user name and e-mail, and some aliases for nicer git logging:</p>
+<p>Configure user name and e-mail, some aliases for nicer git logging, and automatically setting up remote branches on pushing a locally-created one:</p>
 <pre class="language-bash"><code class="language-bash"><span class="token function">git</span> config <span class="token parameter variable">--global</span> user.name <span class="token string">"bob.loblaw"</span>
 <span class="token function">git</span> config <span class="token parameter variable">--global</span> user.email <span class="token string">"bob.loblaw@users.noreply.github.com"</span>
 
@@ -164,7 +164,9 @@ nvm use <span class="token parameter variable">--lts</span>
 
 <span class="token comment"># Git log graph view, all branches, commits ordered by commit date</span>
 <span class="token comment"># In this view, a commit graph is displayed showing the dependencies between commits, but the ordering of the commits if by time. This leads to longer graph edges in some cases, but it is sometimes more intuitive to see commits in order of their creation time.</span>
-<span class="token function">git</span> config <span class="token parameter variable">--global</span> alias.ld <span class="token string">"log --format='%C(yellow)%h%C(reset) %C(auto)%d%C(reset) %s %C(magenta)(%an)%C(reset) %C(cyan)(%ar)%C(reset)' --all --graph --date-order"</span></code></pre>
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> alias.ld <span class="token string">"log --format='%C(yellow)%h%C(reset) %C(auto)%d%C(reset) %s %C(magenta)(%an)%C(reset) %C(cyan)(%ar)%C(reset)' --all --graph --date-order"</span>
+
+<span class="token function">git</span> config <span class="token parameter variable">--global</span> push.autoSetupRemote <span class="token boolean">true</span></code></pre>
 <h2 id="wsl-specific-steps" tabindex="-1"><a class="header-anchor" href="#wsl-specific-steps">WSL-specific steps</a></h2>
 <h3 id="serve-ssh-keys-to-wsl2-from-keepassxc-on-the-host" tabindex="-1"><a class="header-anchor" href="#serve-ssh-keys-to-wsl2-from-keepassxc-on-the-host">Serve SSH keys to WSL2 from KeepassXC on the host</a></h3>
 <p>Again, thanks to the efforts of others who’ve done the hard work to <a href="https://code.mendhak.com/wsl2-keepassxc-ssh/#all-together-in-one-script">make this a simple setup script</a>!</p>
@@ -197,7 +199,7 @@ EOF</span>
 </article>
 
 
-<time datetime="2023-10-16">Updated: Mon 16 Oct 2023</time>
+<time datetime="2025-09-02">Updated: Tue 2 Sep 2025</time>
 
   </main>
 
