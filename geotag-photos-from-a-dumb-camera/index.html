@@ -125,7 +125,7 @@
 <p>Therefore we know from these files where the phone was when the photo was taken. Assuming the camera was nearby, all that needs to be done is merge the geodata from the GPX file into a photo’s EXIF metadata.</p>
 <h2 id="enter-exiftool" tabindex="-1"><a class="header-anchor" href="#enter-exiftool">Enter exiftool</a></h2>
 <p>To do that, use <a href="https://exiftool.org/">exiftool</a> to modify the image’s metadata. Assuming a selection of GPX files in ‘~/gps/’:</p>
-<pre class="language-bash"><code class="language-bash">exiftool <span class="token parameter variable">-geotag</span> <span class="token string">"~/gps/*.gpx"</span> *.jpg</code></pre>
+<pre class="language-bash"><code class="language-bash">exiftool <span class="token parameter variable">-geotag</span> <span class="token string">'~/gps/*.gpx'</span> *.jpg</code></pre>
 <p>Note that this will modify the image’s metadata directly in the file (caveat: I have seen arguments that this should be avoided in preference of metadata in ‘sidecar’ files). By default, exiftool creates a copy of the image, adds a suffix _original to the original and modifies the one with the original filename. This is good for checking that the changes made are as expected, and undoing them if not.</p>
 <p>With some confidence built, add <code>-overwrite_original</code> to skip that copy step.</p>
 <p>Looking to ‘discard changes’ on several files and restore the originals?</p>
@@ -142,9 +142,9 @@
 <p>Show all timestamp info (<a href="https://superuser.com/questions/1840199/how-to-fix-timezone-of-images-using-exiftool#comment2908853_1840199">source</a>):</p>
 <pre class="language-bash"><code class="language-bash">exiftool <span class="token parameter variable">-time:all</span> <span class="token parameter variable">-G1</span> <span class="token parameter variable">-a</span> <span class="token parameter variable">-s</span> image.jpg</code></pre>
 <p>Shift all timestamps forward by an hour:</p>
-<pre class="language-bash"><code class="language-bash">exiftool <span class="token string">"-AllDates+=1"</span> image.jpg</code></pre>
+<pre class="language-bash"><code class="language-bash">exiftool <span class="token string">'-AllDates+=1'</span> image.jpg</code></pre>
 <p>Merge with the UTC offset defined for <code>-geotime</code>:</p>
-<pre class="language-bash"><code class="language-bash">exiftool <span class="token parameter variable">-geotag</span> <span class="token string">"~/gps/*"</span> <span class="token string">"-geotime&lt;<span class="token variable">${DateTimeOriginal}</span>+HH:MM"</span> *.jpg</code></pre>
+<pre class="language-bash"><code class="language-bash">exiftool <span class="token parameter variable">-geotag</span> <span class="token string">'~/gps/*'</span> <span class="token string">'-geotime&lt;${DateTimeOriginal}+HH:MM'</span> *.jpg</code></pre>
 <p>The <a href="https://www.reddit.com/r/photography/comments/gbks0c/guide_to_using_exiftool_to_correct_the_time/">Reddit post</a> I found the <code>-geotime</code> information on also has suggestions for no interpolation (<code>-api GeoMaxIntSecs=0</code>) and using the closest found coordinate within a set time window (<code>-api GeoMaxExtSecs=120</code> for 2 minutes) which seem like good options to consider.</p>
 <p>This is one of those situations where I think ‘good enough’ is probably enough. The results may not be 100% precise but if they end up being in the right city/country, that’ll do for me.</p>
 
