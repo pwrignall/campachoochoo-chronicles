@@ -76,4 +76,4 @@ exiftool -geotag '~/gps/*' '-geotime<${DateTimeOriginal}+HH:MM' *.jpg
 
 The [Reddit post](https://www.reddit.com/r/photography/comments/gbks0c/guide_to_using_exiftool_to_correct_the_time/) I found the `-geotime` information on also has suggestions for no interpolation (`-api GeoMaxIntSecs=0`) and using the closest found coordinate within a set time window (`-api GeoMaxExtSecs=120` for 2 minutes) which seem like good options to consider.
 
-This is one of those situations where I think 'good enough' is probably enough. The results may not be 100% precise but if they end up being in the right city/country, that'll do for me.
+This is one of those situations where I think *good enough* is probably enough. The results may not be 100% precise but if they end up being in the right city/country, that'll do for me.
