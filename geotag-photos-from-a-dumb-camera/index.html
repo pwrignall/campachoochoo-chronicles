@@ -97,7 +97,7 @@
     "image": "https://chronicles.campachoochoo.net/assets/images/geotag-photos/00-by-Stanislav-Kondratiev-pexels.jpg",
     "keywords": "exif,photography,camera",
     "url": "https://chronicles.campachoochoo.net/geotag-photos-from-a-dumb-camera/",
-    "dateModified": "2025-08-16",
+    "dateModified": "2025-09-15",
     "author": {
         "@type": "Person",
         "name": "pwrignall",
@@ -125,7 +125,7 @@
 <p>Therefore we know from these files where the phone was when the photo was taken. Assuming the camera was nearby, all that needs to be done is merge the geodata from the GPX file into a photo’s EXIF metadata.</p>
 <h2 id="enter-exiftool" tabindex="-1"><a class="header-anchor" href="#enter-exiftool">Enter exiftool</a></h2>
 <p>To do that, use <a href="https://exiftool.org/">exiftool</a> to modify the image’s metadata. Assuming a selection of GPX files in ‘~/gps/’:</p>
-<pre class="language-bash"><code class="language-bash">exiftool <span class="token parameter variable">-geotag</span> <span class="token string">"~/gps/*20250816*.gpx"</span> *.jpg</code></pre>
+<pre class="language-bash"><code class="language-bash">exiftool <span class="token parameter variable">-geotag</span> <span class="token string">"~/gps/*.gpx"</span> *.jpg</code></pre>
 <p>Note that this will modify the image’s metadata directly in the file (caveat: I have seen arguments that this should be avoided in preference of metadata in ‘sidecar’ files). By default, exiftool creates a copy of the image, adds a suffix _original to the original and modifies the one with the original filename. This is good for checking that the changes made are as expected, and undoing them if not.</p>
 <p>With some confidence built, add <code>-overwrite_original</code> to skip that copy step.</p>
 <p>Looking to ‘discard changes’ on several files and restore the originals?</p>
@@ -150,6 +150,8 @@
 
 </article>
 
+
+<time datetime="2025-09-15">Updated: Mon 15 Sep 2025</time>
 
   </main>
 
