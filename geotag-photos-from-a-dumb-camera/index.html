@@ -146,7 +146,7 @@
 <p>Merge with the UTC offset defined for <code>-geotime</code>:</p>
 <pre class="language-bash"><code class="language-bash">exiftool <span class="token parameter variable">-geotag</span> <span class="token string">'~/gps/*'</span> <span class="token string">'-geotime&lt;${DateTimeOriginal}+HH:MM'</span> *.jpg</code></pre>
 <p>The <a href="https://www.reddit.com/r/photography/comments/gbks0c/guide_to_using_exiftool_to_correct_the_time/">Reddit post</a> I found the <code>-geotime</code> information on also has suggestions for no interpolation (<code>-api GeoMaxIntSecs=0</code>) and using the closest found coordinate within a set time window (<code>-api GeoMaxExtSecs=120</code> for 2 minutes) which seem like good options to consider.</p>
-<p>This is one of those situations where I think ‘good enough’ is probably enough. The results may not be 100% precise but if they end up being in the right city/country, that’ll do for me.</p>
+<p>This is one of those situations where I think <em>good enough</em> is probably enough. The results may not be 100% precise but if they end up being in the right city/country, that’ll do for me.</p>
 
 </article>
 

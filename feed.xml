@@ -54,7 +54,7 @@
 &lt;p&gt;Merge with the UTC offset defined for &lt;code&gt;-geotime&lt;/code&gt;:&lt;/p&gt;
 &lt;pre class=&quot;language-bash&quot;&gt;&lt;code class=&quot;language-bash&quot;&gt;exiftool &lt;span class=&quot;token parameter variable&quot;&gt;-geotag&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;~/gps/*&#39;&lt;/span&gt; &lt;span class=&quot;token string&quot;&gt;&#39;-geotime&amp;lt;${DateTimeOriginal}+HH:MM&#39;&lt;/span&gt; *.jpg&lt;/code&gt;&lt;/pre&gt;
 &lt;p&gt;The &lt;a href=&quot;https://www.reddit.com/r/photography/comments/gbks0c/guide_to_using_exiftool_to_correct_the_time/&quot;&gt;Reddit post&lt;/a&gt; I found the &lt;code&gt;-geotime&lt;/code&gt; information on also has suggestions for no interpolation (&lt;code&gt;-api GeoMaxIntSecs=0&lt;/code&gt;) and using the closest found coordinate within a set time window (&lt;code&gt;-api GeoMaxExtSecs=120&lt;/code&gt; for 2 minutes) which seem like good options to consider.&lt;/p&gt;
-&lt;p&gt;This is one of those situations where I think ‘good enough’ is probably enough. The results may not be 100% precise but if they end up being in the right city/country, that’ll do for me.&lt;/p&gt;
+&lt;p&gt;This is one of those situations where I think &lt;em&gt;good enough&lt;/em&gt; is probably enough. The results may not be 100% precise but if they end up being in the right city/country, that’ll do for me.&lt;/p&gt;
 </content>
 	</entry>
 	
