@@ -2,6 +2,7 @@
 title: Add locations to photos' EXIF data
 description: How to geotag photos taken with a "dumb" camera
 date: 2025-08-16
+last_modified_at: 2025-09-15
 tags:
   - exif
   - photography
@@ -24,7 +25,7 @@ Therefore we know from these files where the phone was when the photo was taken.
 To do that, use [exiftool](https://exiftool.org/) to modify the image's metadata. Assuming a selection of GPX files in '~/gps/':
 
 ```bash
-exiftool -geotag "~/gps/*20250816*.gpx" *.jpg
+exiftool -geotag "~/gps/*.gpx" *.jpg
 ```
 
 Note that this will modify the image's metadata directly in the file (caveat: I have seen arguments that this should be avoided in preference of metadata in 'sidecar' files). By default, exiftool creates a copy of the image, adds a suffix _original to the original and modifies the one with the original filename. This is good for checking that the changes made are as expected, and undoing them if not.
