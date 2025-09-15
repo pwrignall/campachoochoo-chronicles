@@ -25,7 +25,7 @@ Therefore we know from these files where the phone was when the photo was taken.
 To do that, use [exiftool](https://exiftool.org/) to modify the image's metadata. Assuming a selection of GPX files in '~/gps/':
 
 ```bash
-exiftool -geotag "~/gps/*.gpx" *.jpg
+exiftool -geotag '~/gps/*.gpx' *.jpg
 ```
 
 Note that this will modify the image's metadata directly in the file (caveat: I have seen arguments that this should be avoided in preference of metadata in 'sidecar' files). By default, exiftool creates a copy of the image, adds a suffix _original to the original and modifies the one with the original filename. This is good for checking that the changes made are as expected, and undoing them if not.
@@ -65,13 +65,13 @@ exiftool -time:all -G1 -a -s image.jpg
 Shift all timestamps forward by an hour:
 
 ```bash
-exiftool "-AllDates+=1" image.jpg
+exiftool '-AllDates+=1' image.jpg
 ```
 
 Merge with the UTC offset defined for `-geotime`:
 
 ```bash
-exiftool -geotag "~/gps/*" "-geotime<${DateTimeOriginal}+HH:MM" *.jpg
+exiftool -geotag '~/gps/*' '-geotime<${DateTimeOriginal}+HH:MM' *.jpg
 ```
 
 The [Reddit post](https://www.reddit.com/r/photography/comments/gbks0c/guide_to_using_exiftool_to_correct_the_time/) I found the `-geotime` information on also has suggestions for no interpolation (`-api GeoMaxIntSecs=0`) and using the closest found coordinate within a set time window (`-api GeoMaxExtSecs=120` for 2 minutes) which seem like good options to consider.
